@@ -1,10 +1,254 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Spicy Noodles</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spicy Noodles | Order by Availability</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: #111827;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #fffdf8 0%, #f8fafc 45%, #eef2ff 100%);
+    }
+    header {
+      padding: 2rem 1.5rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      background: rgba(255,255,255,0.92);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      z-index: 10;
+    }
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      letter-spacing: -0.03em;
+    }
+    header p {
+      margin: 0.75rem auto 0;
+      max-width: 680px;
+      color: #475569;
+      line-height: 1.85;
+    }
+    .container {
+      width: min(1160px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 2rem 0 3rem;
+    }
+    .hero {
+      display: grid;
+      gap: 1.5rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+    .hero-content {
+      max-width: 620px;
+    }
+    .hero-content h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(1.9rem, 3vw, 2.75rem);
+      line-height: 1.05;
+    }
+    .hero-content p {
+      margin: 0 0 1.3rem;
+      color: #475569;
+      line-height: 1.8;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.95rem 1.4rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .button:hover { transform: translateY(-1px); }
+    .button-primary {
+      background: #7c3aed;
+      color: white;
+      box-shadow: 0 18px 40px rgba(124, 58, 237, 0.14);
+    }
+    .button-secondary {
+      background: white;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+    }
+    .badge {
+      display: inline-flex;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .note {
+      background: #eef2ff;
+      color: #4338ca;
+      border-left: 4px solid #c7d2fe;
+      padding: 1rem 1.2rem;
+      border-radius: 1rem;
+      margin: 2rem 0;
+    }
+    .product-grid {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 1.5rem;
+    }
+    .product-card {
+      background: white;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 1.25rem;
+      padding: 1.4rem;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.05);
+    }
+    .product-card h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1.15rem;
+    }
+    .product-card p {
+      margin: 0 0 1rem;
+      color: #475569;
+      line-height: 1.75;
+    }
+    .product-card .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      padding: 0.55rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+    }
+    .status.available { background: #dcfce7; color: #166534; }
+    .status.limited { background: #fef3c7; color: #92400e; }
+    .status.waiting { background: #e0e7ff; color: #4338ca; }
+    .section-title {
+      font-size: 1.25rem;
+      margin: 0 0 1rem;
+      color: #111827;
+    }
+    .steps {
+      display: grid;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .step {
+      background: white;
+      border-radius: 1.25rem;
+      border: 1px solid rgba(15,23,42,0.08);
+      padding: 1.25rem;
+    }
+    .step h4 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+    }
+    .step p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.75;
+    }
+    footer {
+      padding: 1.75rem 0 2.5rem;
+      text-align: center;
+      color: #475569;
+      font-size: 0.95rem;
+    }
+    @media (min-width: 900px) {
+      .hero { grid-template-columns: 1.1fr 0.9fr; }
+    }
+  </style>
 </head>
 <body>
-  <h1>🔥 Himalayan Spicy Noodles – Limited Stock in NL 🇳🇵</h1>
-  <p>Authentic Nepali noodles. Order via WhatsApp or Email: info@spicynoodles.nl</p>
+  <header>
+    <h1>Spicy Noodles by Yashoda Foods</h1>
+    <p>Order authentic Nepal-inspired noodles in the Netherlands — sold based on availability and restocked often.</p>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Fresh noodle drops. Limited batches. Available now or soon.</h2>
+        <p>We bring the best Nepalese noodle varieties to your door. Because stock changes fast, every order is managed by current availability, so you always receive the freshest option we have.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="mailto:info@spicynoodles.nl">Email us</a>
+          <a class="button button-secondary" href="https://wa.me/" target="_blank" rel="noreferrer">Message on WhatsApp</a>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Stock update:</strong> Some products are ready to ship today. Others are available on the next restock, and we will confirm availability before shipping.
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Current menu</h2>
+      <div class="product-grid">
+        <article class="product-card">
+          <h3>Himalayan Spicy Chow Mein</h3>
+          <p>Deep chili heat with a savory masala base. Ready to ship now.</p>
+          <span class="status available">Available now</span>
+        </article>
+
+        <article class="product-card">
+          <h3>Garlic & Herb Noodles</h3>
+          <p>Mild, fragrant garlic noodles with a rich Nepali twist.</p>
+          <span class="status limited">Limited stock</span>
+        </article>
+
+        <article class="product-card">
+          <h3>Tom Yum Style Noodles</h3>
+          <p>Tangy spice blend with flavor notes of lemongrass and chili.</p>
+          <span class="status waiting">Based on availability</span>
+        </article>
+
+        <article class="product-card">
+          <h3>Classic Nepali Masala Noodles</h3>
+          <p>Signature spice mix with authentic Himalayan seasoning.</p>
+          <span class="status waiting">Check availability</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="note">
+      <strong>How it works:</strong> Select the product you want and contact us. If it is out of stock, we will offer a comparable noodle variety or reserve it for the next shipment. We always confirm the exact availability before accepting payment.
+    </section>
+
+    <section>
+      <h2 class="section-title">Order guidance</h2>
+      <div class="steps">
+        <div class="step">
+          <h4>1. Choose what you like</h4>
+          <p>Browse the noodle types and pick your favorites. Products marked “Available now” ship first.</p>
+        </div>
+        <div class="step">
+          <h4>2. Contact us</h4>
+          <p>Write to <strong>info@spicynoodles.nl</strong> or send a WhatsApp message. We reply with current stock and delivery options.</p>
+        </div>
+        <div class="step">
+          <h4>3. Confirm availability</h4>
+          <p>If an item is temporarily unavailable, we will suggest the closest alternative or the expected restock date.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Spicy Noodles by Yashoda Foods • Based in the Netherlands • Available with fast updates by availability.</p>
+  </footer>
 </body>
 </html>
