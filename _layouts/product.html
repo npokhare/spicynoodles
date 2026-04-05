@@ -5,396 +5,469 @@ layout: default
 {% assign product = site.data.products.products | where: 'folder', page.product_folder | first %}
 
 <style>
-  .product-hero {
+  /* ── Shell ─────────────────────────────────────────── */
+  .pd-shell {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    margin-bottom: 60px;
-    background: var(--sand);
-    border: 1px solid rgba(74, 48, 32, 0.15);
-    border-radius: 14px;
-    padding: 24px;
+    gap: 3rem;
   }
 
-  .product-image-section {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+  /* ── Hero grid ─────────────────────────────────────── */
+  .pd-hero {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 3.5rem;
+    align-items: start;
   }
 
-  .product-image-box {
-    background: white;
-    border: 1px solid rgba(74, 48, 32, 0.15);
-    border-radius: 12px;
-    padding: 40px;
-    width: 100%;
-    max-width: 450px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 500px;
+  /* ── Image panel ───────────────────────────────────── */
+  .pd-image-panel {
+    background: #fff;
+    border: 1px solid rgba(74, 48, 32, 0.07);
+    border-radius: 18px;
+    box-shadow: 0 4px 28px rgba(28, 16, 7, 0.08);
     overflow: hidden;
+    position: sticky;
+    top: 1.5rem;
   }
 
-  .product-image-box img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
-  .product-info {
-    padding-top: 20px;
-  }
-
-  .brand-section {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--sand);
-  }
-
-  .product-brand-logo {
-    width: 50px;
-    height: 50px;
+  .pd-image-well {
     background: var(--cream);
-    border-radius: 8px;
+    padding: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
-    border: 1px solid #e0d5c7;
+    min-height: 380px;
   }
 
-  .product-brand-logo img {
+  .pd-image-well img {
     max-width: 100%;
-    max-height: 100%;
-    object-fit: cover;
+    max-height: 360px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 28px rgba(28,16,7,0.18));
   }
 
-  .product-brand-name {
-    font-size: 11px;
-    color: var(--deep-chili);
-    font-weight: 600;
-    text-transform: uppercase;
+  .pd-image-footer {
+    padding: 1rem 1.4rem;
+    border-top: 1px solid rgba(74, 48, 32, 0.07);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .pd-brand-logo {
+    height: 2rem;
+    width: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 4px;
+  }
+
+  .pd-brand-name {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.68rem;
     letter-spacing: 0.12em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    text-transform: uppercase;
+    color: var(--mist);
   }
 
-  .detail-eyebrow {
+  /* ── Info side ─────────────────────────────────────── */
+  .pd-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  .pd-eyebrow {
     display: inline-block;
-    margin-bottom: 10px;
-    padding: 0.2rem 0.6rem;
+    padding: 0.22rem 0.7rem;
     border-radius: 999px;
     background: var(--chili-blush);
     color: var(--deep-chili);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-weight: 600;
-  }
-
-  .product-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    color: var(--ink);
-    margin-bottom: 16px;
-    line-height: 1.2;
-  }
-
-  .product-description {
-    color: var(--earth);
-    font-size: 15px;
-    margin-bottom: 28px;
-    line-height: 1.8;
-  }
-
-  .price-section {
-    margin-bottom: 32px;
-    padding: 24px;
-    background: var(--gold-soft);
-    border-radius: 12px;
-    border-left: 4px solid var(--chili-red);
-  }
-
-  .price-label {
-    font-size: 12px;
-    color: var(--mist);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-
-  .price-value {
-    font-size: 30px;
-    color: var(--deep-chili);
-    font-weight: 700;
-  }
-
-  .quick-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 32px;
-    padding: 24px;
-    background: var(--sand);
-    border: 1px solid rgba(74, 48, 32, 0.15);
-    border-radius: 12px;
-  }
-
-  .info-block {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .info-label {
-    font-size: 11px;
-    color: var(--mist);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 8px;
-    font-weight: 600;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  }
-
-  .info-value {
-    font-size: 16px;
-    color: var(--ink);
+    letter-spacing: 0.14em;
+    font-family: 'DM Mono', ui-monospace, monospace;
     font-weight: 500;
   }
 
-  .availability-badge {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 999px;
-    font-size: 10px;
-    font-weight: 600;
-    width: fit-content;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  }
-
-  .in-stock {
-    background: var(--green-soft);
-    color: var(--herb-green);
-  }
-
-  .out-of-stock {
-    background: var(--chili-blush);
-    color: var(--deep-chili);
-  }
-
-  .heat-stars {
-    color: var(--chili-red);
-    font-size: 18px;
-  }
-
-  .cta-button {
-    display: block;
-    background: var(--chili-red);
-    color: white;
-    padding: 14px 24px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: background 0.3s ease;
-    border: none;
-    cursor: pointer;
-    margin-bottom: 32px;
-    width: 100%;
-    text-align: center;
-  }
-
-  .cta-button:hover {
-    background: var(--deep-chili);
-  }
-
-  .specifications-section {
-    background: var(--sand);
-    border: 1px solid rgba(74, 48, 32, 0.15);
-    border-radius: 12px;
-    padding: 32px;
-    margin-bottom: 32px;
-    border-top: 3px solid var(--chili-red);
-  }
-
-  .section-title {
+  .pd-title {
     font-family: 'Playfair Display', serif;
-    font-size: 22px;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 900;
     color: var(--ink);
-    margin-bottom: 24px;
-    border-bottom: 2px solid var(--sand);
-    padding-bottom: 16px;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+    margin: 0.35rem 0 0;
   }
 
-  .specs-grid {
+  .pd-description {
+    color: var(--earth);
+    font-size: 1rem;
+    line-height: 1.75;
+    margin: 0;
+    max-width: 54ch;
+  }
+
+  /* ── Price block ───────────────────────────────────── */
+  .pd-price-block {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  .pd-price-currency {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 1rem;
+    color: var(--mist);
+  }
+
+  .pd-price-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .pd-price-qty {
+    font-size: 0.82rem;
+    color: var(--mist);
+    margin-left: 0.25rem;
+  }
+
+  /* ── Meta strip ────────────────────────────────────── */
+  .pd-meta-strip {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 
-  .spec-item {
+  .pd-meta-tile {
+    background: #fff;
+    border: 1px solid rgba(74, 48, 32, 0.08);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    box-shadow: 0 1px 6px rgba(28,16,7,0.05);
+  }
+
+  .pd-meta-label {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mist);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .pd-meta-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .pd-heat-icons {
+    font-size: 0.95rem;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .pd-avail-pill {
+    display: inline-block;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .pd-avail-pill.in-stock  { background: var(--green-soft); color: var(--herb-green); }
+  .pd-avail-pill.out-stock { background: var(--chili-blush); color: var(--deep-chili); }
+
+  /* ── CTA bar ───────────────────────────────────────── */
+  .pd-cta-bar {
     display: flex;
     flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .spec-label {
-    font-size: 12px;
-    color: var(--mist);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
+  .pd-btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    background: #128c7e;
+    color: #fff !important;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
     font-weight: 600;
+    padding: 0.95rem 1.4rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(18, 140, 126, 0.35);
+    transition: background 0.2s, box-shadow 0.2s;
   }
 
-  .spec-value {
-    font-size: 15px;
+  .pd-btn-primary:hover {
+    background: #0a6d61;
+    box-shadow: 0 6px 24px rgba(18, 140, 126, 0.5);
+  }
+
+  .pd-btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--earth) !important;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 0.85rem 1.4rem;
+    border-radius: 10px;
+    border: 1px solid rgba(74, 48, 32, 0.2);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .pd-btn-secondary:hover {
+    border-color: var(--chili-red);
+    color: var(--chili-red) !important;
+  }
+
+  .pd-btn-atc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: var(--chili-red);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.95rem 1.4rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(208, 41, 10, 0.28);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+
+  .pd-btn-atc:hover {
+    background: var(--deep-chili);
+    box-shadow: 0 6px 24px rgba(208, 41, 10, 0.44);
+  }
+
+  .pd-btn-atc.atc-added {
+    background: var(--herb-green);
+    box-shadow: 0 4px 18px rgba(58, 107, 53, 0.32);
+  }
+
+  .pd-btn-atc:disabled { opacity: 0.85; cursor: default; }
+
+  /* ── Spec / info cards ─────────────────────────────── */
+  .pd-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .pd-card {
+    background: #fff;
+    border: 1px solid rgba(74, 48, 32, 0.08);
+    border-radius: 16px;
+    padding: 1.8rem;
+    box-shadow: 0 2px 16px rgba(28, 16, 7, 0.06);
+  }
+
+  .pd-card-title {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--saffron-gold);
+    margin: 0 0 1.2rem;
+  }
+
+  .pd-spec-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+  }
+
+  .pd-spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .pd-spec-label {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .pd-spec-value {
+    font-size: 0.92rem;
+    font-weight: 500;
     color: var(--earth);
   }
 
-  .additional-info-section {
-    background: var(--sand);
-    border: 1px solid rgba(74, 48, 32, 0.15);
-    border-radius: 12px;
-    padding: 32px;
-    margin-bottom: 32px;
-    border-top: 3px solid var(--chili-red);
-  }
-
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-  }
-
-  .back-button {
+  /* ── Back link ─────────────────────────────────────── */
+  .pd-back {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: var(--chili-red);
+    gap: 0.4rem;
+    color: var(--mist);
     text-decoration: none;
-    font-weight: 600;
-    margin-top: 20px;
+    font-size: 0.85rem;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    letter-spacing: 0.08em;
+    transition: color 0.15s;
   }
 
-  .back-button:hover {
-    color: var(--deep-chili);
-  }
+  .pd-back:hover { color: var(--chili-red); }
 
+  /* ── Responsive ────────────────────────────────────── */
   @media (max-width: 1024px) {
-    .product-hero {
+    .pd-hero {
       grid-template-columns: 1fr;
-      gap: 40px;
+      gap: 2rem;
     }
 
-    .specs-grid, .info-grid {
+    .pd-image-panel {
+      position: static;
+    }
+
+    .pd-sections {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pd-meta-strip {
       grid-template-columns: 1fr 1fr;
     }
-  }
 
-  @media (max-width: 768px) {
-    .product-title {
-      font-size: 24px;
-    }
-
-    .price-value {
-      font-size: 28px;
-    }
-
-    .quick-info {
-      grid-template-columns: 1fr;
-    }
-
-    .specs-grid, .info-grid {
+    .pd-spec-list {
       grid-template-columns: 1fr;
     }
   }
 </style>
 
-<div class="product-hero">
-  <div class="product-image-section">
-    <div class="product-image-box">
-      <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" />
+<div class="pd-shell">
+  <div class="pd-hero">
+
+    <!-- Image -->
+    <div class="pd-image-panel">
+      <div class="pd-image-well">
+        <img src="{{ product.image | relative_url }}" alt="{{ product.title }}">
+      </div>
+      {% if product.brandLogo %}
+      <div class="pd-image-footer">
+        <img class="pd-brand-logo" src="{{ product.brandLogo }}" alt="{{ product.brandName }}" loading="lazy">
+        <span class="pd-brand-name">{{ product.brandName }}</span>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="pd-info">
+      <div>
+        <span class="pd-eyebrow">Nepal-inspired &middot; {{ product.category }}</span>
+        <h1 class="pd-title">{{ product.title }}</h1>
+      </div>
+      <p class="pd-description">{{ product.description }}</p>
+
+      <div class="pd-price-block">
+        <span class="pd-price-currency">&euro;</span>
+        <span class="pd-price-value">{{ product.price }}</span>
+        <span class="pd-price-qty">/ {{ product.quantityPerPacket }}</span>
+      </div>
+
+      <div class="pd-meta-strip">
+        <div class="pd-meta-tile">
+          <span class="pd-meta-label">Heat Level</span>
+          <span class="pd-meta-value pd-heat-icons">{% for i in (1..product.heatLevel) %}&#x1F336;{% endfor %}</span>
+        </div>
+        <div class="pd-meta-tile">
+          <span class="pd-meta-label">Availability</span>
+          <span class="pd-meta-value">
+            <span class="pd-avail-pill {% if product.available %}in-stock{% else %}out-stock{% endif %}">
+              {% if product.available %}&#10003; In Stock{% else %}&#10007; Out of Stock{% endif %}
+            </span>
+          </span>
+        </div>
+        <div class="pd-meta-tile">
+          <span class="pd-meta-label">Weight</span>
+          <span class="pd-meta-value">{{ product.weight }}</span>
+        </div>
+        <div class="pd-meta-tile">
+          <span class="pd-meta-label">Origin</span>
+          <span class="pd-meta-value">{{ product.countryOfOrigin }}</span>
+        </div>
+      </div>
+
+      <div class="pd-cta-bar">
+        {% if product.available %}
+        <button class="pd-btn-atc" data-add-to-cart
+          data-id="{{ product.id }}"
+          data-title="{{ product.title }}"
+          data-price="{{ product.price }}"
+          data-image="{{ product.image | relative_url }}"
+          data-folder="{{ product.folder }}"
+          data-weight="{{ product.weight }}">&#x1F6D2; Add to Cart</button>
+        {% endif %}
+        <a href="mailto:niru.nirajanpokharel@gmail.com?subject=Order%20inquiry%20for%20{{ product.title | url_encode }}" class="pd-btn-secondary">
+          &#x2709; Enquire by email
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Spec + info cards -->
+  <div class="pd-sections">
+    <div class="pd-card">
+      <p class="pd-card-title">Specifications</p>
+      <div class="pd-spec-list">
+        {% for spec in product.specifications %}
+        <div class="pd-spec-item">
+          <span class="pd-spec-label">{{ spec[0] }}</span>
+          <span class="pd-spec-value">{{ spec[1] }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="pd-card">
+      <p class="pd-card-title">Product Info</p>
+      <div class="pd-spec-list">
+        <div class="pd-spec-item">
+          <span class="pd-spec-label">SKU</span>
+          <span class="pd-spec-value">{{ product.sku }}</span>
+        </div>
+        <div class="pd-spec-item">
+          <span class="pd-spec-label">Shelf Life</span>
+          <span class="pd-spec-value">{{ product.shelfLife }}</span>
+        </div>
+        <div class="pd-spec-item">
+          <span class="pd-spec-label">Category</span>
+          <span class="pd-spec-value">{{ product.category }}</span>
+        </div>
+        <div class="pd-spec-item">
+          <span class="pd-spec-label">Country of Origin</span>
+          <span class="pd-spec-value">{{ product.countryOfOrigin }}</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="product-info">
-    <div class="brand-section">
-      <span class="detail-eyebrow">Himalayan profile</span>
-      <div class="product-brand-logo">
-        <img src="{{ product.brandLogo }}" alt="{{ product.brandName }}" />
-      </div>
-      <p class="product-brand-name">{{ product.brandName }}</p>
-    </div>
-
-    <h1 class="product-title">{{ product.title }}</h1>
-    <p class="product-description">{{ product.description }}</p>
-
-    <div class="price-section">
-      <p class="price-label">Price</p>
-      <p class="price-value">{{ product.currency }} {{ product.price }}</p>
-    </div>
-
-    <div class="quick-info">
-      <div class="info-block">
-        <label class="info-label">Quantity</label>
-        <span class="info-value">{{ product.quantityPerPacket }}</span>
-      </div>
-      <div class="info-block">
-        <label class="info-label">Category</label>
-        <span class="info-value">{{ product.category }}</span>
-      </div>
-      <div class="info-block">
-        <label class="info-label">Heat Level</label>
-        <div class="heat-stars">{% for i in (1..product.heatLevel) %}🌶️{% endfor %}</div>
-      </div>
-      <div class="info-block">
-        <label class="info-label">Availability</label>
-        <span class="availability-badge {% if product.available %}in-stock{% else %}out-of-stock{% endif %}">
-          {% if product.available %}✓ In Stock{% else %}✗ Out of Stock{% endif %}
-        </span>
-      </div>
-    </div>
-
-    <button class="cta-button">Order Now</button>
-    <a href="{{ '/products/' | relative_url }}" class="back-button">← Back to Products</a>
-  </div>
-</div>
-
-<div class="specifications-section">
-  <h2 class="section-title">Product Specifications</h2>
-  <div class="specs-grid">
-    {% for spec in product.specifications %}
-      <div class="spec-item">
-        <label class="spec-label">{{ spec[0] }}</label>
-        <span class="spec-value">{{ spec[1] }}</span>
-      </div>
-    {% endfor %}
-  </div>
-</div>
-
-<div class="additional-info-section">
-  <h2 class="section-title">Additional Information</h2>
-  <div class="info-grid">
-    <div class="spec-item">
-      <label class="spec-label">Weight</label>
-      <span class="spec-value">{{ product.weight }}</span>
-    </div>
-    <div class="spec-item">
-      <label class="spec-label">SKU</label>
-      <span class="spec-value">{{ product.sku }}</span>
-    </div>
-    <div class="spec-item">
-      <label class="spec-label">Country of Origin</label>
-      <span class="spec-value">{{ product.countryOfOrigin }}</span>
-    </div>
-    <div class="spec-item">
-      <label class="spec-label">Shelf Life</label>
-      <span class="spec-value">{{ product.shelfLife }}</span>
-    </div>
-  </div>
 </div>

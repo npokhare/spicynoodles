@@ -1,7 +1,6 @@
 ---
 layout: default
 title: SpicyNoodles
-breadcrumb: Home
 ---
 {% assign promo_product = site.data.products.products | where: 'promo', true | first %}
 {% if promo_product == nil %}
@@ -601,7 +600,6 @@ breadcrumb: Home
         <p class="section-copy" style="margin-top:1.2rem;font-size:1.05rem;line-height:1.75;">Welcome to SpicyNoodles &mdash; bold Himalayan flavors in every pack. Browse our curated batch selection and order directly via WhatsApp.</p>
         <div class="hero-actions">
           <a class="hero-btn hero-btn-primary" href="{{ '/products/' | relative_url }}">Browse all noodles</a>
-          <a class="hero-btn hero-btn-ghost" href="https://wa.me/31621153774" target="_blank" rel="noopener">Order via WhatsApp</a>
         </div>
       </div>
       <aside class="hero-note-box" aria-label="Ordering promise">
@@ -613,11 +611,11 @@ breadcrumb: Home
         <div class="hero-note-contact">
           <a href="https://wa.me/31621153774" target="_blank" rel="noopener" class="hero-contact-btn whatsapp">
             <span class="hero-contact-icon">&#x1F4AC;</span>
-            <span class="hero-contact-label">Order via WhatsApp<span>+31 6 2115 3774</span></span>
+            <span class="hero-contact-label">WhatsApp<span>+31 6 2115 3774</span></span>
           </a>
           <a href="mailto:niru.nirajanpokharel@gmail.com" class="hero-contact-btn email">
             <span class="hero-contact-icon">&#x2709;</span>
-            <span class="hero-contact-label">Send us an email</span></span>
+            <span class="hero-contact-label">Contact us</span>
           </a>
         </div>
         <hr class="hero-note-divider">
