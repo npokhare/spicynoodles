@@ -50,6 +50,13 @@
       align-items: center;
     }
 
+    .brand-logo {
+      color: var(--chili-red);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
     .navbar a {
       color: var(--chili-red);
       font-weight: 600;
@@ -129,10 +136,20 @@
 <body>
   <div class="navbar">
     <div class="navbar-content">
-      <a href="/">SpicyNoodles</a>
-      {% if page.breadcrumb %}
-        <div class="breadcrumb">{{ page.breadcrumb }}</div>
-      {% endif %}
+      <a href="/" class="brand-logo">
+        <img src="/assets/images/logo.png" alt="SpicyNoodles logo" style="height:40px;vertical-align:middle;">
+      </a>
+      <nav class="main-nav">
+        <a href="/products/">Alle categorieën</a>
+        <form class="search-bar" action="/search/" method="get" style="display:inline-block;margin:0 16px;">
+          <input type="text" name="q" placeholder="Waar ben je naar op zoek?" style="padding:8px 12px;border-radius:20px;border:1px solid #eee;width:220px;">
+          <button type="submit" style="background:var(--chili-red);color:white;border:none;padding:8px 18px;border-radius:20px;margin-left:-40px;position:relative;z-index:1;">Zoeken</button>
+        </form>
+        <a href="#" title="Meldingen" style="margin:0 8px;">🔔<span style="color:var(--chili-red);font-size:12px;vertical-align:super;">1</span></a>
+        <a href="#" title="Inloggen" style="margin:0 8px;">👤</a>
+        <a href="#" title="Mijn bestellingen" style="margin:0 8px;">📦</a>
+        <a href="#" title="Winkelmand" style="margin:0 8px;">🛒</a>
+      </nav>
     </div>
   </div>
 
