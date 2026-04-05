@@ -1,0 +1,27 @@
+theme: jekyll-theme-cayman
+title: SpicyNoodles
+description: Authentic Nepal-Inspired Noodles
+baseurl: ""
+url: "https://www.spicynoodles.nl"
+
+plugins:
+  - jekyll-seo-tag
+
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Custom variables
+brand:
+  chili_red: "#D0290A"
+  deep_chili: "#8C1A04"
+  chili_blush: "#F4E1DC"
+  ink: "#1C1007"
+  earth: "#4A3020"
+  saffron_gold: "#C98A2D"
+  gold_soft: "#FAF0DC"
+  herb_green: "#3A6B35"
+  green_soft: "#EBF4EA"
+  cream: "#FFFBF5"
+  sand: "#F7EFE4"
+  mist: "#8A7060"

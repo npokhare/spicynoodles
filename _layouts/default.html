@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title | default: site.title }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --chili-red: #D0290A;
+      --deep-chili: #8C1A04;
+      --chili-blush: #F4E1DC;
+      --ink: #1C1007;
+      --earth: #4A3020;
+      --saffron-gold: #C98A2D;
+      --gold-soft: #FAF0DC;
+      --herb-green: #3A6B35;
+      --green-soft: #EBF4EA;
+      --cream: #FFFBF5;
+      --sand: #F7EFE4;
+      --mist: #8A7060;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--cream);
+      color: var(--earth);
+      line-height: 1.75;
+    }
+
+    .navbar {
+      background: white;
+      border-bottom: 1px solid #e0d5c7;
+      padding: 16px 20px;
+    }
+
+    .navbar-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: var(--chili-red);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .breadcrumb {
+      color: var(--mist);
+      font-size: 13px;
+    }
+
+    .breadcrumb a {
+      color: var(--mist);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--chili-red);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: var(--ink);
+    }
+
+    h2 {
+      font-size: 24px;
+      color: var(--ink);
+    }
+
+    a {
+      color: var(--chili-red);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--deep-chili);
+    }
+
+    footer {
+      background: white;
+      border-top: 1px solid #e0d5c7;
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--mist);
+      margin-top: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-content {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .container {
+        padding: 20px 16px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-content">
+      <a href="/">SpicyNoodles</a>
+      {% if page.breadcrumb %}
+        <div class="breadcrumb">{{ page.breadcrumb }}</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="container">
+    {{ content }}
+  </div>
+
+  <footer>
+    <p>&copy; 2026 SpicyNoodles. All rights reserved. 🌶️</p>
+  </footer>
+</body>
+</html>
