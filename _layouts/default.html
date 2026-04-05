@@ -6,7 +6,7 @@
   <title>{{ page.title | default: site.title }}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --chili-red: #D0290A;
@@ -37,9 +37,9 @@
     }
 
     .navbar {
-      background: white;
-      border-bottom: 1px solid #e0d5c7;
-      padding: 16px 20px;
+      background: var(--ink);
+      border-bottom: 2px solid var(--chili-red);
+      padding: 0 20px;
     }
 
     .navbar-content {
@@ -48,29 +48,87 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      min-height: 7rem;
     }
 
-    .brand-logo {
-      color: var(--chili-red);
-      font-weight: 600;
+    .nav-brand-logo {
       text-decoration: none;
-      font-size: 18px;
+      display: inline-flex;
+      align-items: center;
+      line-height: 0;
+      flex-shrink: 0;
+    }
+
+    .nav-brand-logo img {
+      height: 5.5rem;
+      width: auto;
+      display: block;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mist);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--saffron-gold);
+    }
+
+    .nav-cta {
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--chili-red);
+      color: #fff !important;
+      text-decoration: none;
+      padding: 0.55rem 0.9rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover {
+      background: var(--deep-chili);
+      color: var(--saffron-gold) !important;
     }
 
     .navbar a {
-      color: var(--chili-red);
-      font-weight: 600;
+      color: var(--mist);
       text-decoration: none;
-      font-size: 18px;
+    }
+
+    .breadcrumb-bar {
+      border-bottom: 1px solid rgba(74, 48, 32, 0.12);
+      padding: 0 20px;
     }
 
     .breadcrumb {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.55rem 0;
       color: var(--mist);
-      font-size: 13px;
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
     }
 
     .breadcrumb a {
-      color: var(--mist);
+      color: var(--earth);
       text-decoration: none;
       font-weight: 500;
     }
@@ -80,9 +138,9 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 3rem 2rem;
     }
 
     h1, h2, h3, h4, h5, h6 {
@@ -109,18 +167,85 @@
     }
 
     footer {
-      background: white;
-      border-top: 1px solid #e0d5c7;
-      padding: 40px 20px;
-      text-align: center;
-      color: var(--mist);
+      background: var(--ink);
+      border-top: 2px solid var(--chili-red);
+      padding: 0;
       margin-top: 60px;
+      color: var(--mist);
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 20px 1.8rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .footer-brand p {
+      margin: 0.5rem 0 0;
+      font-size: 0.88rem;
+      color: var(--mist);
+      max-width: 32ch;
+      line-height: 1.65;
+    }
+
+    .footer-col h4 {
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--saffron-gold);
+      margin: 0 0 0.75rem;
+    }
+
+    .footer-col a, .footer-col p {
+      display: block;
+      margin: 0 0 0.4rem;
+      font-size: 0.88rem;
+      color: var(--mist);
+      text-decoration: none;
+      line-height: 1.5;
+    }
+
+    .footer-col a:hover {
+      color: #fff;
+    }
+
+    .footer-base {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      padding: 1rem 20px;
+    }
+
+    .footer-base p {
+      font-family: 'DM Mono', ui-monospace, monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      color: rgba(138,112,96,0.6);
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
     }
 
     @media (max-width: 768px) {
       .navbar-content {
-        flex-direction: column;
-        gap: 10px;
+        min-height: 5rem;
+      }
+
+      .nav-brand-logo img {
+        height: 3.8rem;
+      }
+
+      .nav-cta span {
+        display: none;
       }
 
       .container {
@@ -136,29 +261,47 @@
 <body>
   <div class="navbar">
     <div class="navbar-content">
-      <a href="/" class="brand-logo">
-        <img src="/assets/images/logo.png" alt="SpicyNoodles logo" style="height:40px;vertical-align:middle;">
+      <a href="/" class="nav-brand-logo">
+        <img src="/assets/images/logo.png" alt="SpicyNoodles logo">
       </a>
-      <nav class="main-nav">
-        <a href="/products/">Alle categorieën</a>
-        <form class="search-bar" action="/search/" method="get" style="display:inline-block;margin:0 16px;">
-          <input type="text" name="q" placeholder="Waar ben je naar op zoek?" style="padding:8px 12px;border-radius:20px;border:1px solid #eee;width:220px;">
-          <button type="submit" style="background:var(--chili-red);color:white;border:none;padding:8px 18px;border-radius:20px;margin-left:-40px;position:relative;z-index:1;">Zoeken</button>
-        </form>
-        <a href="#" title="Meldingen" style="margin:0 8px;">🔔<span style="color:var(--chili-red);font-size:12px;vertical-align:super;">1</span></a>
-        <a href="#" title="Inloggen" style="margin:0 8px;">👤</a>
-        <a href="#" title="Mijn bestellingen" style="margin:0 8px;">📦</a>
-        <a href="#" title="Winkelmand" style="margin:0 8px;">🛒</a>
+      <nav class="main-nav" aria-label="Site navigation">
+        <a href="/products/" class="nav-link">All Noodles</a>
+        <a href="https://wa.me/31621153774" target="_blank" rel="noopener" class="nav-cta">Order via WhatsApp</a>
       </nav>
     </div>
   </div>
+
+  {% if page.breadcrumb %}
+    <div class="breadcrumb-bar">
+      <div class="breadcrumb" aria-label="Breadcrumb">{{ page.breadcrumb }}</div>
+    </div>
+  {% endif %}
 
   <div class="container">
     {{ content }}
   </div>
 
   <footer>
-    <p>&copy; 2026 SpicyNoodles. All rights reserved. 🌶️</p>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="/assets/images/logo.png" alt="SpicyNoodles" style="height:3rem;opacity:0.85;">
+        <p>Authentic Nepal-inspired noodles, delivered to your door in the&nbsp;Netherlands.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Order</h4>
+        <a href="https://wa.me/31621153774" target="_blank" rel="noopener">WhatsApp us</a>
+        <a href="mailto:niru.nirajanpokharel@gmail.com">niru.nirajanpokharel@gmail.com</a>
+        <a href="/products/">Browse all noodles</a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <p>From the footsteps of the Himalayas to the Netherlands.</p>
+        <p>Small batch · Nepal-inspired · Honest availability</p>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>&copy; 2026 SpicyNoodles &mdash; All rights reserved</p>
+    </div>
   </footer>
 </body>
 </html>

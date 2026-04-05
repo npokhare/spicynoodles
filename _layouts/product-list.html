@@ -5,6 +5,30 @@ layout: default
 <h1>{{ page.title }}</h1>
 
 <style>
+  .catalog-intro {
+    margin-bottom: 1.5rem;
+    max-width: 60ch;
+  }
+
+  .catalog-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    background: var(--chili-blush);
+    color: var(--deep-chili);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-weight: 600;
+  }
+
+  .catalog-intro p {
+    margin: 0;
+    color: var(--earth);
+  }
+
   .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -13,8 +37,9 @@ layout: default
   }
 
   .product-card {
-    background: white;
-    border: 1px solid #e0d5c7;
+    background: var(--sand);
+    border: 1px solid rgba(74, 48, 32, 0.15);
+    border-top: 3px solid var(--chili-red);
     border-radius: 12px;
     overflow: hidden;
     text-decoration: none;
@@ -34,7 +59,7 @@ layout: default
   .card-image {
     width: 100%;
     height: 220px;
-    background: var(--sand);
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -75,14 +100,22 @@ layout: default
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     padding-top: 16px;
-    border-top: 1px solid #e0d5c7;
+    border-top: 1px solid rgba(74, 48, 32, 0.15);
   }
 
   .card-price {
-    font-size: 18px;
+    font-size: 12px;
     font-weight: 700;
-    color: var(--chili-red);
+    color: var(--earth);
+    background: var(--gold-soft);
+    border-radius: 999px;
+    padding: 4px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
 
   .card-heat {
@@ -92,11 +125,13 @@ layout: default
 
   .card-availability {
     display: inline-block;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
 
   .in-stock {
@@ -110,11 +145,16 @@ layout: default
   }
 </style>
 
+<section class="catalog-intro" aria-label="Products intro">
+  <span class="catalog-eyebrow">Nepal-inspired collection</span>
+  <p>Choose from our current batch and open any product card for full details, specs, and ordering options.</p>
+</section>
+
 <div class="products-grid">
   {% for product in site.data.products.products %}
-  <a href="/products/{{ product.folder }}/" class="product-card">
+  <a href="{{ '/products/' | append: product.folder | append: '/' | relative_url }}" class="product-card">
     <div class="card-image">
-      <img src="/{{ product.image }}" alt="{{ product.title }}" />
+      <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" />
     </div>
     <div class="card-content">
       <h2 class="card-title">{{ product.title }}</h2>

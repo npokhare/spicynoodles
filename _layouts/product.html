@@ -2,12 +2,18 @@
 layout: default
 ---
 
+{% assign product = site.data.products.products | where: 'folder', page.product_folder | first %}
+
 <style>
   .product-hero {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
     margin-bottom: 60px;
+    background: var(--sand);
+    border: 1px solid rgba(74, 48, 32, 0.15);
+    border-radius: 14px;
+    padding: 24px;
   }
 
   .product-image-section {
@@ -18,7 +24,7 @@ layout: default
 
   .product-image-box {
     background: white;
-    border: 1px solid #e0d5c7;
+    border: 1px solid rgba(74, 48, 32, 0.15);
     border-radius: 12px;
     padding: 40px;
     width: 100%;
@@ -46,7 +52,7 @@ layout: default
     border-bottom: 2px solid var(--sand);
   }
 
-  .brand-logo {
+  .product-brand-logo {
     width: 50px;
     height: 50px;
     background: var(--cream);
@@ -58,18 +64,33 @@ layout: default
     border: 1px solid #e0d5c7;
   }
 
-  .brand-logo img {
+  .product-brand-logo img {
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
   }
 
-  .brand-name {
-    font-size: 13px;
-    color: var(--mist);
-    font-weight: 500;
+  .product-brand-name {
+    font-size: 11px;
+    color: var(--deep-chili);
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.12em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  .detail-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--chili-blush);
+    color: var(--deep-chili);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-weight: 600;
   }
 
   .product-title {
@@ -81,7 +102,7 @@ layout: default
   }
 
   .product-description {
-    color: var(--mist);
+    color: var(--earth);
     font-size: 15px;
     margin-bottom: 28px;
     line-height: 1.8;
@@ -90,7 +111,7 @@ layout: default
   .price-section {
     margin-bottom: 32px;
     padding: 24px;
-    background: var(--sand);
+    background: var(--gold-soft);
     border-radius: 12px;
     border-left: 4px solid var(--chili-red);
   }
@@ -105,8 +126,8 @@ layout: default
   }
 
   .price-value {
-    font-size: 32px;
-    color: var(--chili-red);
+    font-size: 30px;
+    color: var(--deep-chili);
     font-weight: 700;
   }
 
@@ -116,8 +137,8 @@ layout: default
     gap: 16px;
     margin-bottom: 32px;
     padding: 24px;
-    background: white;
-    border: 1px solid #e0d5c7;
+    background: var(--sand);
+    border: 1px solid rgba(74, 48, 32, 0.15);
     border-radius: 12px;
   }
 
@@ -127,12 +148,13 @@ layout: default
   }
 
   .info-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--mist);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.12em;
     margin-bottom: 8px;
     font-weight: 600;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
 
   .info-value {
@@ -144,10 +166,13 @@ layout: default
   .availability-badge {
     display: inline-block;
     padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 13px;
+    border-radius: 999px;
+    font-size: 10px;
     font-weight: 600;
     width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
 
   .in-stock {
@@ -169,11 +194,13 @@ layout: default
     display: block;
     background: var(--chili-red);
     color: white;
-    padding: 14px 32px;
+    padding: 14px 24px;
     border-radius: 8px;
     text-decoration: none;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     transition: background 0.3s ease;
     border: none;
     cursor: pointer;
@@ -187,11 +214,12 @@ layout: default
   }
 
   .specifications-section {
-    background: white;
-    border: 1px solid #e0d5c7;
+    background: var(--sand);
+    border: 1px solid rgba(74, 48, 32, 0.15);
     border-radius: 12px;
     padding: 32px;
     margin-bottom: 32px;
+    border-top: 3px solid var(--chili-red);
   }
 
   .section-title {
@@ -229,11 +257,12 @@ layout: default
   }
 
   .additional-info-section {
-    background: white;
-    border: 1px solid #e0d5c7;
+    background: var(--sand);
+    border: 1px solid rgba(74, 48, 32, 0.15);
     border-radius: 12px;
     padding: 32px;
     margin-bottom: 32px;
+    border-top: 3px solid var(--chili-red);
   }
 
   .info-grid {
@@ -289,56 +318,57 @@ layout: default
 <div class="product-hero">
   <div class="product-image-section">
     <div class="product-image-box">
-      <img src="/{{ page.product.image }}" alt="{{ page.product.title }}" />
+      <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" />
     </div>
   </div>
 
   <div class="product-info">
     <div class="brand-section">
-      <div class="brand-logo">
-        <img src="{{ page.product.brandLogo }}" alt="{{ page.product.brandName }}" />
+      <span class="detail-eyebrow">Himalayan profile</span>
+      <div class="product-brand-logo">
+        <img src="{{ product.brandLogo }}" alt="{{ product.brandName }}" />
       </div>
-      <p class="brand-name">{{ page.product.brandName }}</p>
+      <p class="product-brand-name">{{ product.brandName }}</p>
     </div>
 
-    <h1 class="product-title">{{ page.product.title }}</h1>
-    <p class="product-description">{{ page.product.description }}</p>
+    <h1 class="product-title">{{ product.title }}</h1>
+    <p class="product-description">{{ product.description }}</p>
 
     <div class="price-section">
       <p class="price-label">Price</p>
-      <p class="price-value">{{ page.product.currency }} {{ page.product.price }}</p>
+      <p class="price-value">{{ product.currency }} {{ product.price }}</p>
     </div>
 
     <div class="quick-info">
       <div class="info-block">
         <label class="info-label">Quantity</label>
-        <span class="info-value">{{ page.product.quantityPerPacket }}</span>
+        <span class="info-value">{{ product.quantityPerPacket }}</span>
       </div>
       <div class="info-block">
         <label class="info-label">Category</label>
-        <span class="info-value">{{ page.product.category }}</span>
+        <span class="info-value">{{ product.category }}</span>
       </div>
       <div class="info-block">
         <label class="info-label">Heat Level</label>
-        <div class="heat-stars">{% for i in (1..page.product.heatLevel) %}🌶️{% endfor %}</div>
+        <div class="heat-stars">{% for i in (1..product.heatLevel) %}🌶️{% endfor %}</div>
       </div>
       <div class="info-block">
         <label class="info-label">Availability</label>
-        <span class="availability-badge {% if page.product.available %}in-stock{% else %}out-of-stock{% endif %}">
-          {% if page.product.available %}✓ In Stock{% else %}✗ Out of Stock{% endif %}
+        <span class="availability-badge {% if product.available %}in-stock{% else %}out-of-stock{% endif %}">
+          {% if product.available %}✓ In Stock{% else %}✗ Out of Stock{% endif %}
         </span>
       </div>
     </div>
 
     <button class="cta-button">Order Now</button>
-    <a href="/products/" class="back-button">← Back to Products</a>
+    <a href="{{ '/products/' | relative_url }}" class="back-button">← Back to Products</a>
   </div>
 </div>
 
 <div class="specifications-section">
   <h2 class="section-title">Product Specifications</h2>
   <div class="specs-grid">
-    {% for spec in page.product.specifications %}
+    {% for spec in product.specifications %}
       <div class="spec-item">
         <label class="spec-label">{{ spec[0] }}</label>
         <span class="spec-value">{{ spec[1] }}</span>
@@ -352,19 +382,19 @@ layout: default
   <div class="info-grid">
     <div class="spec-item">
       <label class="spec-label">Weight</label>
-      <span class="spec-value">{{ page.product.weight }}</span>
+      <span class="spec-value">{{ product.weight }}</span>
     </div>
     <div class="spec-item">
       <label class="spec-label">SKU</label>
-      <span class="spec-value">{{ page.product.sku }}</span>
+      <span class="spec-value">{{ product.sku }}</span>
     </div>
     <div class="spec-item">
       <label class="spec-label">Country of Origin</label>
-      <span class="spec-value">{{ page.product.countryOfOrigin }}</span>
+      <span class="spec-value">{{ product.countryOfOrigin }}</span>
     </div>
     <div class="spec-item">
       <label class="spec-label">Shelf Life</label>
-      <span class="spec-value">{{ page.product.shelfLife }}</span>
+      <span class="spec-value">{{ product.shelfLife }}</span>
     </div>
   </div>
 </div>
