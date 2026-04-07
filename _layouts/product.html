@@ -3,494 +3,630 @@ layout: default
 ---
 
 {% assign product = site.data.products.products | where: 'folder', page.product_folder | first %}
+{% assign diet_value = product.dietary | downcase %}
+{% assign diet_label = '' %}
+{% if diet_value == 'vegan' %}
+  {% assign diet_label = 'Vegan' %}
+{% elsif diet_value == 'vegetarian' %}
+  {% assign diet_label = 'Vegetarian' %}
+{% endif %}
 
 <style>
-  /* ── Shell ─────────────────────────────────────────── */
-  .pd-shell {
-    display: grid;
-    gap: 3rem;
+  .pdx-shell {
+    max-width: 1240px;
+    margin: 0 auto;
   }
 
-  /* ── Hero grid ─────────────────────────────────────── */
-  .pd-hero {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: 3.5rem;
-    align-items: start;
+  .pdx-card {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
   }
 
-  /* ── Image panel ───────────────────────────────────── */
-  .pd-image-panel {
+  .pdx-grid {
+    display: grid;
+    grid-template-columns: 1.02fr 1fr;
+    gap: 2.3rem;
+  }
+
+  .pdx-media {
     background: #fff;
-    border: 1px solid rgba(74, 48, 32, 0.07);
-    border-radius: 18px;
-    box-shadow: 0 4px 28px rgba(28, 16, 7, 0.08);
-    overflow: hidden;
-    position: sticky;
-    top: 1.5rem;
-  }
-
-  .pd-image-well {
-    background: var(--cream);
-    padding: 2.5rem;
+    border: 1px solid rgba(74, 48, 32, 0.1);
+    border-radius: 16px;
+    position: relative;
+    padding: 1.4rem;
+    min-height: 560px;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 380px;
   }
 
-  .pd-image-well img {
-    max-width: 100%;
-    max-height: 360px;
-    object-fit: contain;
-    filter: drop-shadow(0 12px 28px rgba(28,16,7,0.18));
-  }
-
-  .pd-image-footer {
-    padding: 1rem 1.4rem;
-    border-top: 1px solid rgba(74, 48, 32, 0.07);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .pd-brand-logo {
-    height: 2rem;
+  .pdx-media img {
     width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 520px;
     object-fit: contain;
-    flex-shrink: 0;
-    border-radius: 4px;
+    filter: drop-shadow(0 12px 26px rgba(28, 16, 7, 0.15));
   }
 
-  .pd-brand-name {
+  .pdx-ribbon {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.7rem;
+    background: linear-gradient(90deg, var(--deep-chili), var(--chili-red));
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.34rem 0.78rem;
     font-family: 'DM Mono', ui-monospace, monospace;
-    font-size: 0.68rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .pdx-diet-icon {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .pdx-diet-icon img {
+    width: 26px;
+    height: 26px;
+    display: block;
+  }
+
+  .pdx-diet-icon::after {
+    content: attr(data-diet-text);
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
+    background: var(--ink);
+    color: var(--cream);
+    border: 1px solid rgba(247, 239, 228, 0.18);
+    border-radius: 6px;
+    padding: 0.28rem 0.45rem;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    z-index: 30;
+  }
+
+  .pdx-diet-icon:hover::after,
+  .pdx-diet-icon:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  .pdx-info {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .pdx-title {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 2.65rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .pdx-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.95rem 1.25rem;
+    font-size: 1rem;
+    color: var(--earth);
+    align-items: center;
+  }
+
+  .pdx-meta .muted {
+    color: var(--mist);
+    font-weight: 500;
+  }
+
+  .pdx-brand {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--mist);
-  }
-
-  /* ── Info side ─────────────────────────────────────── */
-  .pd-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1.6rem;
-  }
-
-  .pd-eyebrow {
-    display: inline-block;
-    padding: 0.22rem 0.7rem;
-    border-radius: 999px;
-    background: var(--chili-blush);
-    color: var(--deep-chili);
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-family: 'DM Mono', ui-monospace, monospace;
-    font-weight: 500;
-  }
-
-  .pd-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.8rem, 3vw, 2.8rem);
-    font-weight: 900;
-    color: var(--ink);
-    line-height: 1.1;
-    letter-spacing: -0.3px;
-    margin: 0.35rem 0 0;
-  }
-
-  .pd-description {
-    color: var(--earth);
-    font-size: 1rem;
-    line-height: 1.75;
     margin: 0;
-    max-width: 54ch;
   }
 
-  /* ── Price block ───────────────────────────────────── */
-  .pd-price-block {
-    display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
-  }
-
-  .pd-price-currency {
-    font-family: 'DM Mono', ui-monospace, monospace;
-    font-size: 1rem;
-    color: var(--mist);
-  }
-
-  .pd-price-value {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--ink);
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-
-  .pd-price-qty {
-    font-size: 0.82rem;
-    color: var(--mist);
-    margin-left: 0.25rem;
-  }
-
-  /* ── Meta strip ────────────────────────────────────── */
-  .pd-meta-strip {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  .pd-meta-tile {
-    background: #fff;
-    border: 1px solid rgba(74, 48, 32, 0.08);
-    border-radius: 10px;
-    padding: 0.85rem 1rem;
-    box-shadow: 0 1px 6px rgba(28,16,7,0.05);
-  }
-
-  .pd-meta-label {
-    font-family: 'DM Mono', ui-monospace, monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mist);
-    display: block;
-    margin-bottom: 0.35rem;
-  }
-
-  .pd-meta-value {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.2;
-  }
-
-  .pd-heat-icons {
-    font-size: 0.95rem;
-    letter-spacing: -1px;
-    line-height: 1;
-  }
-
-  .pd-avail-pill {
-    display: inline-block;
-    padding: 0.22rem 0.6rem;
+  .pdx-dot {
+    width: 10px;
+    height: 10px;
     border-radius: 999px;
-    font-family: 'DM Mono', ui-monospace, monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 500;
+    display: inline-block;
+    margin-right: 0.4rem;
   }
 
-  .pd-avail-pill.in-stock  { background: var(--green-soft); color: var(--herb-green); }
-  .pd-avail-pill.out-stock { background: var(--chili-blush); color: var(--deep-chili); }
-
-  /* ── CTA bar ───────────────────────────────────────── */
-  .pd-cta-bar {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .pd-btn-primary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    background: #128c7e;
-    color: #fff !important;
-    text-decoration: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 0.95rem 1.4rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 18px rgba(18, 140, 126, 0.35);
-    transition: background 0.2s, box-shadow 0.2s;
-  }
-
-  .pd-btn-primary:hover {
-    background: #0a6d61;
-    box-shadow: 0 6px 24px rgba(18, 140, 126, 0.5);
-  }
-
-  .pd-btn-secondary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background: transparent;
-    color: var(--earth) !important;
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 600;
-    padding: 0.85rem 1.4rem;
-    border-radius: 10px;
-    border: 1px solid rgba(74, 48, 32, 0.2);
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .pd-btn-secondary:hover {
-    border-color: var(--chili-red);
-    color: var(--chili-red) !important;
-  }
-
-  .pd-btn-atc {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    background: var(--chili-red);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    padding: 0.95rem 1.4rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 18px rgba(208, 41, 10, 0.28);
-    transition: background 0.2s, box-shadow 0.2s;
-  }
-
-  .pd-btn-atc:hover {
-    background: var(--deep-chili);
-    box-shadow: 0 6px 24px rgba(208, 41, 10, 0.44);
-  }
-
-  .pd-btn-atc.atc-added {
+  .pdx-dot.in {
     background: var(--herb-green);
-    box-shadow: 0 4px 18px rgba(58, 107, 53, 0.32);
   }
 
-  .pd-btn-atc:disabled { opacity: 0.85; cursor: default; }
-
-  /* ── Spec / info cards ─────────────────────────────── */
-  .pd-sections {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    align-items: start;
+  .pdx-dot.out {
+    background: var(--chili-red);
   }
 
-  .pd-card {
-    background: #fff;
-    border: 1px solid rgba(74, 48, 32, 0.08);
-    border-radius: 16px;
-    padding: 1.8rem;
-    box-shadow: 0 2px 16px rgba(28, 16, 7, 0.06);
-  }
-
-  .pd-card-title {
-    font-family: 'DM Mono', ui-monospace, monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--saffron-gold);
-    margin: 0 0 1.2rem;
-  }
-
-  .pd-spec-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.1rem;
-  }
-
-  .pd-spec-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .pd-spec-label {
-    font-family: 'DM Mono', ui-monospace, monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--mist);
-  }
-
-  .pd-spec-value {
-    font-size: 0.92rem;
-    font-weight: 500;
+  .pdx-stock {
+    font-size: 1.1rem;
     color: var(--earth);
   }
 
-  /* ── Back link ─────────────────────────────────────── */
-  .pd-back {
+  .pdx-stock.in {
+    color: var(--herb-green);
+  }
+
+  .pdx-stock.out {
+    color: var(--deep-chili);
+  }
+
+  .pdx-ship-inline {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .pdx-ship-pill {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.38rem;
+    background: var(--gold-soft);
+    border: 1px solid rgba(201, 138, 45, 0.34);
+    color: var(--earth);
+    border-radius: 999px;
+    padding: 0.3rem 0.62rem;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .pdx-ship-details {
+    width: fit-content;
+  }
+
+  .pdx-ship-details summary {
+    color: var(--deep-chili);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    list-style: none;
+  }
+
+  .pdx-ship-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pdx-ship-details p {
+    margin: 0.45rem 0 0;
+    max-width: 52ch;
+    color: var(--mist);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .pdx-buy-row {
+    border-top: 1px solid rgba(74, 48, 32, 0.14);
+    border-bottom: 1px solid rgba(74, 48, 32, 0.14);
+    padding: 1.35rem 0;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 0.9rem;
+    align-items: center;
+  }
+
+  .pdx-price {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.2vw, 2.7rem);
+    color: var(--ink);
+    line-height: 1;
+    margin: 0;
+  }
+
+  .pdx-qty {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    color: var(--mist);
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-family: 'DM Mono', ui-monospace, monospace;
-    letter-spacing: 0.08em;
-    transition: color 0.15s;
+    border: 1px solid rgba(74, 48, 32, 0.22);
+    border-radius: 999px;
+    overflow: hidden;
+    background: #fff;
+    min-height: 48px;
   }
 
-  .pd-back:hover { color: var(--chili-red); }
+  .pdx-qty button {
+    border: 0;
+    background: transparent;
+    width: 2.8rem;
+    height: 48px;
+    font-size: 1.35rem;
+    color: var(--earth);
+    cursor: pointer;
+  }
 
-  /* ── Responsive ────────────────────────────────────── */
-  @media (max-width: 1024px) {
-    .pd-hero {
+  .pdx-qty button:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
+
+  .pdx-qty input {
+    width: 2.2rem;
+    border: 0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .pdx-buy-btn {
+    border: 0;
+    border-radius: 999px;
+    min-height: 48px;
+    background: var(--chili-red);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0 1.5rem;
+    justify-self: stretch;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .pdx-buy-btn:hover {
+    background: var(--deep-chili);
+    transform: translateY(-1px);
+  }
+
+  .pdx-buy-btn:disabled {
+    background: var(--mist);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .pdx-desc {
+    margin: 0;
+    color: var(--earth);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  .pdx-note-list {
+    margin: 0;
+    padding: 1.1rem 0 0;
+    list-style: none;
+    border-top: 1px solid rgba(74, 48, 32, 0.14);
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .pdx-note-list li {
+    color: var(--earth);
+    font-size: 1.06rem;
+    line-height: 1.55;
+    position: relative;
+    padding-left: 1.75rem;
+  }
+
+  .pdx-note-list li::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    top: 0.02rem;
+    color: var(--herb-green);
+    font-weight: 700;
+  }
+
+  .pdx-spec {
+    margin-top: 3rem;
+    background: #fff;
+    border: 1px solid rgba(74, 48, 32, 0.1);
+    border-radius: 14px;
+    padding: 1.2rem;
+  }
+
+  .pdx-spec-title {
+    margin: 0 0 0.9rem;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--saffron-gold);
+  }
+
+  .pdx-spec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem 1rem;
+  }
+
+  .pdx-spec-item small {
+    display: block;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mist);
+    margin-bottom: 0.2rem;
+  }
+
+  .pdx-spec-item span {
+    font-size: 0.94rem;
+    color: var(--earth);
+    font-weight: 500;
+  }
+
+  @media (max-width: 980px) {
+    .pdx-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
     }
 
-    .pd-image-panel {
-      position: static;
+    .pdx-media {
+      min-height: 420px;
     }
 
-    .pd-sections {
+    .pdx-buy-row {
+      grid-template-columns: auto auto minmax(170px, 1fr);
+      gap: 0.7rem;
+    }
+
+    .pdx-spec-grid {
       grid-template-columns: 1fr;
     }
   }
 
   @media (max-width: 640px) {
-    .pd-meta-strip {
-      grid-template-columns: 1fr 1fr;
+    .pdx-buy-row {
+      grid-template-columns: auto auto 1fr;
+      gap: 0.5rem;
+      align-items: center;
     }
 
-    .pd-spec-list {
-      grid-template-columns: 1fr;
+    .pdx-price {
+      font-size: clamp(1.6rem, 8vw, 2.05rem);
+    }
+
+    .pdx-qty {
+      min-height: 42px;
+    }
+
+    .pdx-qty button {
+      width: 2.2rem;
+      height: 42px;
+      font-size: 1.15rem;
+    }
+
+    .pdx-qty input {
+      width: 1.7rem;
+      font-size: 0.9rem;
+    }
+
+    .pdx-buy-btn {
+      min-height: 42px;
+      font-size: 0.9rem;
+      padding: 0 0.8rem;
+      white-space: nowrap;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .pdx-diet-icon::after {
+      left: auto;
+      right: calc(100% + 8px);
+      transform: translateY(-50%) translateX(4px);
+    }
+
+    .pdx-diet-icon:hover::after,
+    .pdx-diet-icon:focus-visible::after {
+      transform: translateY(-50%) translateX(0);
     }
   }
 </style>
 
-<div class="pd-shell">
-  <div class="pd-hero">
-
-    <!-- Image -->
-    <div class="pd-image-panel">
-      <div class="pd-image-well">
+<div class="pdx-shell">
+  <article class="pdx-card">
+    <div class="pdx-grid">
+      <section class="pdx-media" aria-label="Product image">
+        {% if product.promo %}<span class="pdx-ribbon">Best Seller</span>{% endif %}
         <img src="{{ product.image | relative_url }}" alt="{{ product.title }}">
-      </div>
-      {% if product.brandLogo %}
-      <div class="pd-image-footer">
-        <img class="pd-brand-logo" src="{{ product.brandLogo }}" alt="{{ product.brandName }}" loading="lazy">
-        <span class="pd-brand-name">{{ product.brandName }}</span>
-      </div>
-      {% endif %}
-    </div>
-
-    <!-- Info -->
-    <div class="pd-info">
-      <div>
-        <span class="pd-eyebrow">Nepal-inspired &middot; {{ product.category }}</span>
-        <h1 class="pd-title">{{ product.title }}</h1>
-      </div>
-      <p class="pd-description">{{ product.description }}</p>
-
-      <div class="pd-price-block">
-        <span class="pd-price-currency">&euro;</span>
-        <span class="pd-price-value">{{ product.price }}</span>
-        <span class="pd-price-qty">/ {{ product.quantityPerPacket }}</span>
-      </div>
-
-      <div class="pd-meta-strip">
-        <div class="pd-meta-tile">
-          <span class="pd-meta-label">Heat Level</span>
-          <span class="pd-meta-value pd-heat-icons">{% for i in (1..product.heatLevel) %}&#x1F336;{% endfor %}</span>
-        </div>
-        <div class="pd-meta-tile">
-          <span class="pd-meta-label">Availability</span>
-          <span class="pd-meta-value">
-            <span class="pd-avail-pill {% if product.available %}in-stock{% else %}out-stock{% endif %}">
-              {% if product.available %}&#10003; In Stock{% else %}&#10007; Out of Stock{% endif %}
-            </span>
-          </span>
-        </div>
-        <div class="pd-meta-tile">
-          <span class="pd-meta-label">Weight</span>
-          <span class="pd-meta-value">{{ product.weight }}</span>
-        </div>
-        <div class="pd-meta-tile">
-          <span class="pd-meta-label">Origin</span>
-          <span class="pd-meta-value">{{ product.countryOfOrigin }}</span>
-        </div>
-      </div>
-
-      <div class="pd-cta-bar">
-        {% if product.available %}
-        <button class="pd-btn-atc" data-add-to-cart
-          data-id="{{ product.id }}"
-          data-title="{{ product.title }}"
-          data-price="{{ product.price }}"
-          data-image="{{ product.image | relative_url }}"
-          data-folder="{{ product.folder }}"
-          data-weight="{{ product.weight }}">&#x1F6D2; Add to Cart</button>
+        {% if diet_label == 'Vegan' %}
+        <span class="pdx-diet-icon" data-diet-text="Vegan" aria-label="Vegan" tabindex="0">
+          <img src="{{ '/assets/images/diet-vegan-badge.svg' | relative_url }}" alt="Vegan icon" loading="lazy">
+        </span>
+        {% elsif diet_label == 'Vegetarian' %}
+        <span class="pdx-diet-icon" data-diet-text="Vegetarian" aria-label="Vegetarian" tabindex="0">
+          <img src="{{ '/assets/images/diet-veg-badge.svg' | relative_url }}" alt="Vegetarian icon" loading="lazy">
+        </span>
         {% endif %}
-        <a href="mailto:niru.nirajanpokharel@gmail.com?subject=Order%20inquiry%20for%20{{ product.title | url_encode }}" class="pd-btn-secondary">
-          &#x2709; Enquire by email
-        </a>
-      </div>
+      </section>
+
+      <section class="pdx-info">
+        <h1 class="pdx-title">{{ product.title }}</h1>
+        {% if product.brandName %}<p class="pdx-brand">{{ product.brandName }}</p>{% endif %}
+
+        <div class="pdx-meta">
+          <span><span class="muted">SKU</span>: {{ product.sku }}</span>
+          <span>&#128205; {{ product.countryOfOrigin }}</span>
+        </div>
+
+        <div>
+          <p class="pdx-stock {% if product.available %}in{% else %}out{% endif %}"><span class="pdx-dot {% if product.available %}in{% else %}out{% endif %}"></span>{% if product.available %}In stock{% else %}Out of stock{% endif %}</p>
+          <div class="pdx-ship-inline">
+            <span class="pdx-ship-pill">&#128666; NL shipping &euro;3.95 &middot; Free from &euro;50</span>
+            <details class="pdx-ship-details">
+              <summary>Delivery details</summary>
+              <p>Ships in 1-3 business days inside the Netherlands. We confirm stock before payment through WhatsApp or email so your order stays simple and safe.</p>
+            </details>
+          </div>
+        </div>
+
+        <div class="pdx-buy-row">
+          <p class="pdx-price">&euro; {{ product.price }}</p>
+          <div class="pdx-qty" aria-label="Quantity selector">
+            <button type="button" id="pdx-qty-minus" aria-label="Decrease quantity" {% unless product.available %}disabled{% endunless %}>&#8722;</button>
+            <input type="text" id="pdx-qty-value" value="1" readonly {% unless product.available %}disabled aria-disabled="true"{% endunless %}>
+            <button type="button" id="pdx-qty-plus" aria-label="Increase quantity" {% unless product.available %}disabled{% endunless %}>&#43;</button>
+          </div>
+          <button type="button" class="pdx-buy-btn" id="pdx-add-btn" {% unless product.available %}disabled{% endunless %}>
+            {% if product.available %}&#128722; Add to Cart{% else %}Out of Stock{% endif %}
+          </button>
+        </div>
+
+        <p class="pdx-desc">{{ product.description }}</p>
+
+        <ul class="pdx-note-list">
+          <li>Free shipping from &euro;50</li>
+          <li>Authentic Nepal-inspired flavor, delivered to your door</li>
+          <li>Safe checkout via WhatsApp or email confirmation</li>
+        </ul>
+      </section>
     </div>
 
-  </div>
-
-  <!-- Spec + info cards -->
-  <div class="pd-sections">
-    <div class="pd-card">
-      <p class="pd-card-title">Specifications</p>
-      <div class="pd-spec-list">
+    <section class="pdx-spec">
+      <p class="pdx-spec-title">Product Details</p>
+      <div class="pdx-spec-grid">
+        <div class="pdx-spec-item">
+          <small>Net Weight</small>
+          <span>{{ product.quantityPerPacket }}</span>
+        </div>
+        <div class="pdx-spec-item">
+          <small>Heat Level</small>
+          <span>{% for i in (1..product.heatLevel) %}&#x1F336;{% endfor %}</span>
+        </div>
+        <div class="pdx-spec-item">
+          <small>Shelf Life</small>
+          <span>{{ product.shelfLife }}</span>
+        </div>
         {% for spec in product.specifications %}
-        <div class="pd-spec-item">
-          <span class="pd-spec-label">{{ spec[0] }}</span>
-          <span class="pd-spec-value">{{ spec[1] }}</span>
+        <div class="pdx-spec-item">
+          <small>{{ spec[0] }}</small>
+          <span>{{ spec[1] }}</span>
         </div>
         {% endfor %}
       </div>
-    </div>
-
-    <div class="pd-card">
-      <p class="pd-card-title">Product Info</p>
-      <div class="pd-spec-list">
-        <div class="pd-spec-item">
-          <span class="pd-spec-label">SKU</span>
-          <span class="pd-spec-value">{{ product.sku }}</span>
-        </div>
-        <div class="pd-spec-item">
-          <span class="pd-spec-label">Shelf Life</span>
-          <span class="pd-spec-value">{{ product.shelfLife }}</span>
-        </div>
-        <div class="pd-spec-item">
-          <span class="pd-spec-label">Category</span>
-          <span class="pd-spec-value">{{ product.category }}</span>
-        </div>
-        <div class="pd-spec-item">
-          <span class="pd-spec-label">Country of Origin</span>
-          <span class="pd-spec-value">{{ product.countryOfOrigin }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
+    </section>
+  </article>
 </div>
+
+<script>
+  (function () {
+    var qty = 1;
+    var minQty = 1;
+    var maxQty = 20;
+    var isAvailable = {% if product.available %}true{% else %}false{% endif %};
+
+    var minusBtn = document.getElementById('pdx-qty-minus');
+    var plusBtn = document.getElementById('pdx-qty-plus');
+    var qtyInput = document.getElementById('pdx-qty-value');
+    var addBtn = document.getElementById('pdx-add-btn');
+
+    if (!minusBtn || !plusBtn || !qtyInput || !addBtn) return;
+
+    function renderQty() {
+      qtyInput.value = String(qty);
+      if (!isAvailable) {
+        minusBtn.disabled = true;
+        plusBtn.disabled = true;
+        return;
+      }
+
+      minusBtn.disabled = qty <= minQty;
+      plusBtn.disabled = qty >= maxQty;
+    }
+
+    minusBtn.addEventListener('click', function () {
+      qty = Math.max(minQty, qty - 1);
+      renderQty();
+    });
+
+    plusBtn.addEventListener('click', function () {
+      qty = Math.min(maxQty, qty + 1);
+      renderQty();
+    });
+
+    addBtn.addEventListener('click', function () {
+      if (addBtn.disabled) return;
+      var product = {
+        id: {{ product.id | default: 0 }},
+        title: {{ product.title | jsonify }},
+        price: {{ product.price | default: 0 }},
+        image: {{ product.image | relative_url | jsonify }},
+        folder: {{ product.folder | jsonify }},
+        weight: {{ product.weight | default: '' | jsonify }}
+      };
+
+      if (typeof addToCart === 'function') {
+        for (var i = 0; i < qty; i += 1) {
+          addToCart(product);
+        }
+
+        var original = addBtn.innerHTML;
+        addBtn.innerHTML = '&#10003; Added (' + qty + ')';
+        addBtn.disabled = true;
+        setTimeout(function () {
+          addBtn.innerHTML = original;
+          {% if product.available %}addBtn.disabled = false;{% endif %}
+        }, 1200);
+      }
+    });
+
+    renderQty();
+  })();
+</script>
 
 {% if product %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Product",
-  "name": "{{ product.title | escape }}",
-  "description": "{{ product.description | escape }}",
-  "image": ["{{ product.image | absolute_url }}"],
-  "sku": "{{ product.sku | escape }}",
+  "name": {{ product.title | jsonify }},
+  "description": {{ product.description | jsonify }},
+  "image": [{{ product.image | absolute_url | jsonify }}],
+  "sku": {{ product.sku | jsonify }},
   "brand": {
     "@type": "Brand",
-    "name": "{{ product.brandName | default: site.title | escape }}"
+    "name": {{ product.brandName | default: site.title | jsonify }}
   },
-  "countryOfOrigin": "{{ product.countryOfOrigin | escape }}",
+  "additionalProperty": [
+    {
+      "@type": "PropertyValue",
+      "name": "Net Weight",
+      "value": {{ product.quantityPerPacket | jsonify }}
+    }
+  ],
+  {% if diet_label != '' %}
+  "suitableForDiet": "{% if diet_label == 'Vegan' %}https://schema.org/VeganDiet{% else %}https://schema.org/VegetarianDiet{% endif %}",
+  {% endif %}
+  "countryOfOrigin": {{ product.countryOfOrigin | jsonify }},
   "offers": {
     "@type": "Offer",
-    "url": "{{ page.url | absolute_url }}",
+    "url": {{ page.url | absolute_url | jsonify }},
     "priceCurrency": "EUR",
-    "price": "{{ product.price }}",
+    "price": {{ product.price | jsonify }},
     "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
     "itemCondition": "https://schema.org/NewCondition"
   }

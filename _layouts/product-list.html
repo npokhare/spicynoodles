@@ -59,7 +59,7 @@ layout: default
     background: #fff;
     border: 1px solid rgba(74, 48, 32, 0.08);
     border-radius: 16px;
-    overflow: hidden;
+    overflow: visible;
     text-decoration: none;
     color: inherit;
     display: flex;
@@ -77,10 +77,11 @@ layout: default
     width: 100%;
     height: 220px;
     background: var(--cream);
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
     border-bottom: 1px solid rgba(74, 48, 32, 0.06);
   }
 
@@ -144,12 +145,94 @@ layout: default
     margin: 0;
   }
 
+  .diet-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .card-image .diet-icon-wrap {
+    position: absolute;
+    right: 0.55rem;
+    bottom: 0.55rem;
+    width: 26px;
+    height: 26px;
+    z-index: 3;
+  }
+
+  .card-image .diet-icon-wrap img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .diet-icon-wrap img {
+    width: 22px;
+    height: 22px;
+    display: block;
+  }
+
+  .diet-icon-wrap::after {
+    content: attr(data-diet-text);
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
+    background: var(--ink);
+    color: var(--cream);
+    border: 1px solid rgba(247, 239, 228, 0.18);
+    border-radius: 6px;
+    padding: 0.28rem 0.45rem;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    z-index: 40;
+  }
+
+  .diet-icon-wrap:hover::after,
+  .diet-icon-wrap:focus-visible::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  @media (max-width: 860px) {
+    .diet-icon-wrap::after {
+      left: auto;
+      right: calc(100% + 8px);
+      transform: translateY(-50%) translateX(4px);
+    }
+
+    .diet-icon-wrap:hover::after,
+    .diet-icon-wrap:focus-visible::after {
+      transform: translateY(-50%) translateX(0);
+    }
+  }
+
   .card-description {
     font-size: 0.88rem;
     color: var(--mist);
     line-height: 1.6;
     flex-grow: 1;
     margin: 0;
+  }
+
+  .card-pack {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--earth);
+    margin: 0.2rem 0 0;
   }
 
   .card-footer {
@@ -257,9 +340,19 @@ layout: default
 
   <div class="products-grid">
     {% for product in site.data.products.products %}
+    {% assign diet_value = product.dietary | downcase %}
     <a href="{{ '/products/' | append: product.folder | append: '/' | relative_url }}" class="product-card">
       <div class="card-image">
         <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" loading="lazy">
+        {% if diet_value == 'vegan' %}
+        <span class="diet-icon-wrap" data-diet-text="Vegan" aria-label="Vegan" tabindex="0">
+          <img src="{{ '/assets/images/diet-vegan-badge.svg' | relative_url }}" alt="Vegan icon" loading="lazy">
+        </span>
+        {% elsif diet_value == 'vegetarian' %}
+        <span class="diet-icon-wrap" data-diet-text="Vegetarian" aria-label="Vegetarian" tabindex="0">
+          <img src="{{ '/assets/images/diet-veg-badge.svg' | relative_url }}" alt="Vegetarian icon" loading="lazy">
+        </span>
+        {% endif %}
       </div>
       <div class="card-content">
         <div class="card-badges">
@@ -272,6 +365,7 @@ layout: default
         </div>
         <h2 class="card-title">{{ product.title }}</h2>
         <p class="card-description">{{ product.description }}</p>
+        <p class="card-pack">{{ product.quantityPerPacket }}</p>
         <div class="card-footer">
           <span class="card-heat">{% for i in (1..product.heatLevel) %}&#x1F336;{% endfor %}</span>
           {% if product.available %}

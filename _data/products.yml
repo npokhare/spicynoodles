@@ -9,9 +9,10 @@ products:
     image: "/assets/images/current-hot-spicy-noodles.png"
     price: 2.50
     currency: "Euro"
-    quantityPerPacket: "90g (1 pack)"
+    quantityPerPacket: "90g total"
+    dietary: ""
     heatLevel: 4
-    available: false
+    available: true
     category: "Instant Noodles"
     weight: "90g"
     sku: "CHSN-001"
@@ -19,10 +20,8 @@ products:
     shelfLife: "24 months"
     specifications:
       "Cooking Time": "3-4 minutes"
-      "Servings per Pack": "1"
       "Main Ingredient": "Wheat Flour"
       "Contains": "MSG, Spices, Salt"
-      "Vegan": "Yes"
       "Gluten-Free": "No"
 
   - id: 2
@@ -34,7 +33,8 @@ products:
     image: "/assets/images/current-2x-spicy-noodles.png"
     price: 2.75
     currency: "Euro"
-    quantityPerPacket: "90g (1 pack)"
+    quantityPerPacket: "90g total"
+    dietary: ""
     heatLevel: 5
     available: false
     category: "Instant Noodles"
@@ -44,10 +44,8 @@ products:
     shelfLife: "24 months"
     specifications:
       "Cooking Time": "3-4 minutes"
-      "Servings per Pack": "1"
       "Main Ingredient": "Wheat Flour"
       "Contains": "Extra Chili, Spices, Salt"
-      "Vegan": "Yes"
       "Gluten-Free": "No"
 
   - id: 3
@@ -59,7 +57,8 @@ products:
     image: "/assets/images/current-schezwan-instant-noodles.png"
     price: 2.60
     currency: "Euro"
-    quantityPerPacket: "90g (1 pack)"
+    quantityPerPacket: "90g total"
+    dietary: ""
     heatLevel: 3
     available: false
     category: "Instant Noodles"
@@ -69,10 +68,8 @@ products:
     shelfLife: "24 months"
     specifications:
       "Cooking Time": "3-4 minutes"
-      "Servings per Pack": "1"
       "Main Ingredient": "Wheat Flour"
       "Contains": "Schezwan Seasoning, Spices, Salt"
-      "Vegan": "Yes"
       "Gluten-Free": "No"
 
   - id: 4
@@ -84,7 +81,8 @@ products:
     image: "/assets/images/current-hot-n-lemon-veggie-soup-noodles.png"
     price: 2.80
     currency: "Euro"
-    quantityPerPacket: "100g (1 pack)"
+    quantityPerPacket: "100g total"
+    dietary: "vegetarian"
     heatLevel: 3
     available: false
     category: "Soup Noodles"
@@ -94,8 +92,6 @@ products:
     shelfLife: "24 months"
     specifications:
       "Cooking Time": "4-5 minutes"
-      "Servings per Pack": "1"
       "Main Ingredient": "Wheat Flour, Vegetables"
       "Contains": "Lemon Flavoring, Spices, Vegetables, Salt"
-      "Vegan": "Yes"
       "Gluten-Free": "No"
