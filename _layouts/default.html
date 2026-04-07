@@ -3,7 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+  <link rel="shortcut icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
   <title>{{ page.title | default: site.title }}</title>
+  {% if page.robots %}<meta name="robots" content="{{ page.robots }}">{% endif %}
+  {% seo %}
+  {% assign page_title = page.title | default: site.title %}
+  {% assign page_desc = page.description | default: site.description %}
+  {% assign canonical_url = page.url | absolute_url %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "{{ site.url }}/#organization",
+        "name": "{{ site.title | escape }}",
+        "url": "{{ site.url }}",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ '/assets/images/logo.png' | absolute_url }}"
+        },
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "customer support",
+            "email": "niru.nirajanpokharel@gmail.com"
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "{{ site.url }}/#website",
+        "url": "{{ site.url }}",
+        "name": "{{ site.title | escape }}",
+        "description": "{{ site.description | escape }}",
+        "publisher": {
+          "@id": "{{ site.url }}/#organization"
+        },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "{{ canonical_url }}#webpage",
+        "url": "{{ canonical_url }}",
+        "name": "{{ page_title | escape }}",
+        "description": "{{ page_desc | escape }}",
+        "isPartOf": {
+          "@id": "{{ site.url }}/#website"
+        },
+        "inLanguage": "en"
+      }
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -369,6 +422,7 @@
       </a>
       <nav class="main-nav" aria-label="Site navigation">
         <a href="/products/" class="nav-link">All Noodles</a>
+        <a href="/articles/" class="nav-link">Articles</a>
         <a href="/cart/" class="nav-cart-btn" aria-label="View cart">&#x1F6D2;<span id="cart-badge">0</span></a>
       </nav>
     </div>
@@ -395,6 +449,7 @@
         <a href="https://wa.me/31621153774" target="_blank" rel="noopener">WhatsApp us</a>
         <a href="mailto:niru.nirajanpokharel@gmail.com">Email us</a>
         <a href="/products/">Browse all noodles</a>
+        <a href="/articles/">Read articles</a>
       </div>
       <div class="footer-col">
         <h4>About</h4>

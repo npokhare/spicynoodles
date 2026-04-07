@@ -471,3 +471,29 @@ layout: default
   </div>
 
 </div>
+
+{% if product %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "{{ product.title | escape }}",
+  "description": "{{ product.description | escape }}",
+  "image": ["{{ product.image | absolute_url }}"],
+  "sku": "{{ product.sku | escape }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ product.brandName | default: site.title | escape }}"
+  },
+  "countryOfOrigin": "{{ product.countryOfOrigin | escape }}",
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ page.url | absolute_url }}",
+    "priceCurrency": "EUR",
+    "price": "{{ product.price }}",
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+}
+</script>
+{% endif %}

@@ -6,6 +6,8 @@ url: "https://www.spicynoodles.nl"
 
 plugins:
   - jekyll-seo-tag
+  - jekyll-feed
+  - jekyll-sitemap
 
 sass:
   sass_dir: _sass
