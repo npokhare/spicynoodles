@@ -1,0 +1,310 @@
+---
+layout: default
+---
+
+{% assign article = site.data.articles.articles | where: 'slug', page.article_slug | first %}
+{% assign cta_product = site.data.products.products | where: 'promo', true | first %}
+{% if cta_product == nil %}
+  {% assign cta_product = site.data.products.products | first %}
+{% endif %}
+
+<style>
+  .article-shell {
+    display: grid;
+    gap: 2.6rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .article-hero {
+    background: var(--sand);
+    border: 1px solid rgba(74, 48, 32, 0.12);
+    border-radius: 16px;
+    padding: 2rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .article-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--deep-chili);
+    background: var(--chili-blush);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+  }
+
+  .article-title {
+    margin: 0;
+    color: var(--ink);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .article-meta {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    color: var(--mist);
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .article-intro {
+    margin: 0;
+    color: var(--earth);
+    font-size: 1.04rem;
+    line-height: 1.8;
+  }
+
+  .article-keywords {
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .article-keyword {
+    display: inline-block;
+    background: var(--gold-soft);
+    color: var(--earth);
+    border-radius: 999px;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.6rem;
+  }
+
+  .article-content {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .article-section {
+    background: #fff;
+    border: 1px solid rgba(74, 48, 32, 0.1);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+
+  .article-section h2 {
+    margin: 0 0 0.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--ink);
+  }
+
+  .article-section p {
+    margin: 0;
+    color: var(--earth);
+  }
+
+  .article-faq {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .article-faq h2 {
+    margin: 0;
+    font-size: 1.55rem;
+    color: var(--ink);
+  }
+
+  .faq-item {
+    background: var(--sand);
+    border-left: 3px solid var(--saffron-gold);
+    border-radius: 8px;
+    padding: 1rem 1rem 1rem 1.1rem;
+  }
+
+  .faq-item h3 {
+    margin: 0 0 0.35rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  .faq-item p {
+    margin: 0;
+    color: var(--earth);
+    font-size: 0.95rem;
+  }
+
+  .article-cta {
+    background: var(--ink);
+    border-radius: 14px;
+    padding: 1.6rem;
+    color: var(--cream);
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .article-cta h2 {
+    margin: 0;
+    font-size: 1.45rem;
+    color: var(--cream);
+  }
+
+  .article-cta p {
+    margin: 0;
+    color: rgba(255, 251, 245, 0.85);
+  }
+
+  .article-cta-links {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .article-btn {
+    text-decoration: none;
+    border: none;
+    padding: 0.62rem 0.92rem;
+    border-radius: 7px;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+  }
+
+  .article-btn.primary {
+    background: var(--chili-red);
+    color: #fff;
+  }
+
+  .article-btn.secondary {
+    background: transparent;
+    border: 1px solid rgba(255, 251, 245, 0.4);
+    color: var(--cream);
+  }
+
+  .article-btn.atc-added {
+    background: var(--herb-green);
+    color: #fff;
+  }
+</style>
+
+{% if article %}
+<div class="article-shell">
+  <header class="article-hero">
+    <span class="article-eyebrow">{{ article.hero_label }}</span>
+    <h1 class="article-title">{{ article.title }}</h1>
+    <div class="article-meta">
+      <span>{{ article.published_at }}</span>
+      <span>&bull;</span>
+      <span>{{ article.read_time }}</span>
+      <span>&bull;</span>
+      <span>Nepal-inspired</span>
+    </div>
+    <p class="article-intro">{{ article.intro }}</p>
+    <div class="article-keywords">
+      {% for keyword in article.keywords %}
+      <span class="article-keyword">{{ keyword }}</span>
+      {% endfor %}
+    </div>
+  </header>
+
+  <section class="article-content">
+    {% for section in article.sections %}
+    <article class="article-section">
+      <h2>{{ section.heading }}</h2>
+      <p>{{ section.body }}</p>
+    </article>
+    {% endfor %}
+  </section>
+
+  <section class="article-faq" aria-label="Frequently asked questions">
+    <h2>Frequently Asked Questions</h2>
+    {% for faq in article.faqs %}
+    <article class="faq-item">
+      <h3>{{ faq.question }}</h3>
+      <p>{{ faq.answer }}</p>
+    </article>
+    {% endfor %}
+  </section>
+
+  <section class="article-cta">
+    <h2>Ready to taste the origin?</h2>
+    <p>Start with {{ cta_product.title }} and build your cart. You can review everything before completing your order.</p>
+    <div class="article-cta-links">
+      <button class="article-btn primary" data-add-to-cart
+        data-id="{{ cta_product.id }}"
+        data-title="{{ cta_product.title }}"
+        data-price="{{ cta_product.price }}"
+        data-image="{{ cta_product.image | relative_url }}"
+        data-folder="{{ cta_product.folder }}"
+        data-weight="{{ cta_product.weight }}">Add to Cart</button>
+      <a class="article-btn secondary" href="/cart/">View Cart</a>
+      <a class="article-btn secondary" href="/products/">Browse Noodles</a>
+    </div>
+  </section>
+</div>
+{% else %}
+<div class="article-shell">
+  <h1>Article not found</h1>
+  <p>The requested article is not available right now.</p>
+</div>
+{% endif %}
+
+{% if article %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ article.title | escape }}",
+  "description": "{{ article.seo_description | default: article.intro | escape }}",
+  "datePublished": "{{ article.published_at }}",
+  "dateModified": "{{ article.published_at }}",
+  "inLanguage": "en",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ page.url | absolute_url }}"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "{{ site.title | escape }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ site.title | escape }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ '/assets/images/logo.png' | absolute_url }}"
+    }
+  },
+  "keywords": [{% for keyword in article.keywords %}"{{ keyword | escape }}"{% unless forloop.last %}, {% endunless %}{% endfor %}]
+}
+</script>
+
+{% if article.faqs and article.faqs.size > 0 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for faq in article.faqs %}
+    {
+      "@type": "Question",
+      "name": "{{ faq.question | escape }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ faq.answer | escape }}"
+      }
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endif %}
