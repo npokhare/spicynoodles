@@ -11,7 +11,7 @@ products:
     currency: "Euro"
     quantityPerPacket: "90g (1 pack)"
     heatLevel: 4
-    available: true
+    available: false
     category: "Instant Noodles"
     weight: "90g"
     sku: "CHSN-001"
@@ -36,7 +36,7 @@ products:
     currency: "Euro"
     quantityPerPacket: "90g (1 pack)"
     heatLevel: 5
-    available: true
+    available: false
     category: "Instant Noodles"
     weight: "90g"
     sku: "CX2SN-001"
@@ -61,7 +61,7 @@ products:
     currency: "Euro"
     quantityPerPacket: "90g (1 pack)"
     heatLevel: 3
-    available: true
+    available: false
     category: "Instant Noodles"
     weight: "90g"
     sku: "CSHN-001"
@@ -86,7 +86,7 @@ products:
     currency: "Euro"
     quantityPerPacket: "100g (1 pack)"
     heatLevel: 3
-    available: true
+    available: false
     category: "Soup Noodles"
     weight: "100g"
     sku: "CHLVN-001"
