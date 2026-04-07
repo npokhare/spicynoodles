@@ -7,7 +7,7 @@ products:
     brandLogo: "https://yashodafoods.com.np/wp-content/uploads/2024/03/logo-yasodha-foods.png"
     description: "Spice up your day with good blend of fiery spices and aromatic ingredients to fill up your belly."
     image: "/assets/images/current-hot-spicy-noodles.png"
-    price: 2.50
+    price: 1.00
     currency: "Euro"
     quantityPerPacket: "90g total"
     dietary: ""
@@ -31,7 +31,7 @@ products:
     brandLogo: "https://yashodafoods.com.np/wp-content/uploads/2024/03/logo-yasodha-foods.png"
     description: "Elevate your taste buds with 2X Spicy Hot Noodles, delivering extra heat and irresistible flavor."
     image: "/assets/images/current-2x-spicy-noodles.png"
-    price: 2.75
+    price: 1.00
     currency: "Euro"
     quantityPerPacket: "90g total"
     dietary: ""
@@ -55,7 +55,7 @@ products:
     brandLogo: "https://yashodafoods.com.np/wp-content/uploads/2024/03/logo-yasodha-foods.png"
     description: "Delight in the yummy, easy-to-eat Schezwan flavored hot and spicy noodles experience."
     image: "/assets/images/current-schezwan-instant-noodles.png"
-    price: 2.60
+    price: 1.00
     currency: "Euro"
     quantityPerPacket: "90g total"
     dietary: ""
@@ -79,7 +79,7 @@ products:
     brandLogo: "https://yashodafoods.com.np/wp-content/uploads/2024/03/logo-yasodha-foods.png"
     description: "Combination of Hot and Lemon that tingles your taste buds, and aromatic ingredients to fill up your belly."
     image: "/assets/images/current-hot-n-lemon-veggie-soup-noodles.png"
-    price: 2.80
+    price: 1.00
     currency: "Euro"
     quantityPerPacket: "100g total"
     dietary: "vegetarian"
