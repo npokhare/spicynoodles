@@ -7,7 +7,22 @@
   <link rel="shortcut icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
   <title>{{ page.title | default: site.title }}</title>
   {% if page.robots %}<meta name="robots" content="{{ page.robots }}">{% endif %}
+  {% assign share_title = page.title | default: site.title %}
+  {% assign share_desc = page.description | default: site.description %}
+  {% assign share_url = page.url | absolute_url %}
+  {% assign share_image = page.image | default: site.logo | default: '/assets/images/logo.png' %}
+  {% assign share_image_abs = share_image | absolute_url %}
   {% seo %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ share_title | escape }}">
+  <meta property="og:description" content="{{ share_desc | escape }}">
+  <meta property="og:url" content="{{ share_url }}">
+  <meta property="og:image" content="{{ share_image_abs }}">
+  <meta property="og:site_name" content="{{ site.title | escape }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ share_title | escape }}">
+  <meta name="twitter:description" content="{{ share_desc | escape }}">
+  <meta name="twitter:image" content="{{ share_image_abs }}">
   {% assign page_title = page.title | default: site.title %}
   {% assign page_desc = page.description | default: site.description %}
   {% assign canonical_url = page.url | absolute_url %}

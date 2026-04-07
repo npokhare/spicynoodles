@@ -3,6 +3,16 @@ title: SpicyNoodles
 description: Authentic Nepal-Inspired Noodles
 baseurl: ""
 url: "https://www.spicynoodles.nl"
+lang: en
+logo: /assets/images/logo.png
+
+social:
+  name: SpicyNoodles
+  links:
+    - https://www.spicynoodles.nl
+
+twitter:
+  card: summary_large_image
 
 plugins:
   - jekyll-seo-tag
@@ -12,6 +22,12 @@ plugins:
 sass:
   sass_dir: _sass
   style: compressed
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/images/logo.png
 
 # Custom variables
 brand:
