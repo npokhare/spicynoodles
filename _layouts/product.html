@@ -11,6 +11,8 @@ layout: default
   {% assign diet_label = 'Vegetarian' %}
 {% endif %}
 
+<link rel="preload" as="image" href="{{ product.image | relative_url }}" fetchpriority="high">
+
 <style>
   .pdx-shell {
     max-width: 1240px;
@@ -452,7 +454,7 @@ layout: default
     <div class="pdx-grid">
       <section class="pdx-media" aria-label="Product image">
         {% if product.promo %}<span class="pdx-ribbon">Best Seller</span>{% endif %}
-        <img src="{{ product.image | relative_url }}" alt="{{ product.title }}">
+        <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" loading="eager" fetchpriority="high" decoding="async">
         {% if diet_label == 'Vegan' %}
         <span class="pdx-diet-icon" data-diet-text="Vegan" aria-label="Vegan" tabindex="0">
           <img src="{{ '/assets/images/diet-vegan-badge.svg' | relative_url }}" alt="Vegan icon" loading="lazy">
