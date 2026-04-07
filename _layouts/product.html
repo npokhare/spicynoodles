@@ -538,6 +538,7 @@ layout: default
     var minQty = 1;
     var maxQty = 20;
     var isAvailable = {% if product.available %}true{% else %}false{% endif %};
+    var productId = {{ product.id | default: 0 }};
 
     var minusBtn = document.getElementById('pdx-qty-minus');
     var plusBtn = document.getElementById('pdx-qty-plus');
@@ -545,6 +546,24 @@ layout: default
     var addBtn = document.getElementById('pdx-add-btn');
 
     if (!minusBtn || !plusBtn || !qtyInput || !addBtn) return;
+
+    function getExistingQtyFromCart(id) {
+      try {
+        var cart = JSON.parse(localStorage.getItem('spicynoodles_cart')) || [];
+        var item = cart.find(function (entry) { return entry.id === id; });
+        return item ? Math.max(minQty, parseInt(item.qty, 10) || minQty) : 0;
+      } catch (err) {
+        return 0;
+      }
+    }
+
+    if (isAvailable) {
+      var existingQty = getExistingQtyFromCart(productId);
+      if (existingQty > 0) {
+        qty = existingQty;
+        maxQty = Math.max(maxQty, existingQty);
+      }
+    }
 
     function renderQty() {
       qtyInput.value = String(qty);
@@ -580,12 +599,20 @@ layout: default
       };
 
       if (typeof addToCart === 'function') {
-        for (var i = 0; i < qty; i += 1) {
-          addToCart(product);
+        var existingQty = getExistingQtyFromCart(product.id);
+        var actionLabel = 'Added';
+
+        if (existingQty > 0 && typeof updateQty === 'function') {
+          updateQty(product.id, qty);
+          actionLabel = 'Updated';
+        } else {
+          for (var i = 0; i < qty; i += 1) {
+            addToCart(product);
+          }
         }
 
         var original = addBtn.innerHTML;
-        addBtn.innerHTML = '&#10003; Added (' + qty + ')';
+        addBtn.innerHTML = '&#10003; ' + actionLabel + ' (' + qty + ')';
         addBtn.disabled = true;
         setTimeout(function () {
           addBtn.innerHTML = original;
