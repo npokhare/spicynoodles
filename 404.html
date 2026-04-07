@@ -1,0 +1,409 @@
+---
+layout: default
+title: "Page Not Found | SpicyNoodles"
+permalink: /404.html
+robots: noindex, nofollow
+---
+
+<style>
+  /* ── FULL-BLEED BREAKOUT ─────────────────────── */
+  .nf-shell {
+    margin: -3rem -2rem -3rem;
+    min-height: 86vh;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem 12rem;
+    isolation: isolate;
+  }
+
+  /* ── GHOST 404 WATERMARK ─────────────────────── */
+  .nf-ghost {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+  }
+
+  .nf-ghost-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(16rem, 42vw, 32rem);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(208,41,10,0.12);
+    letter-spacing: -0.04em;
+    animation: ghost-breathe 9s ease-in-out infinite;
+  }
+
+  @keyframes ghost-breathe {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%       { opacity: 1.0; transform: scale(1.015); }
+  }
+
+  /* ── ATMOSPHERIC GLOWS ───────────────────────── */
+  .nf-glow {
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 1;
+    animation: glow-drift 10s ease-in-out infinite;
+  }
+
+  .nf-glow.red {
+    width: 40rem; height: 22rem;
+    background: radial-gradient(ellipse, rgba(208,41,10,0.30) 0%, transparent 68%);
+    top: -8rem; left: 50%; transform: translateX(-50%);
+    animation-duration: 8s;
+  }
+
+  .nf-glow.gold-r {
+    width: 28rem; height: 28rem;
+    background: radial-gradient(ellipse, rgba(201,138,45,0.22) 0%, transparent 66%);
+    bottom: 14rem; right: -4rem;
+    animation-duration: 12s;
+    animation-delay: -3s;
+  }
+
+  .nf-glow.gold-l {
+    width: 20rem; height: 20rem;
+    background: radial-gradient(ellipse, rgba(201,138,45,0.14) 0%, transparent 66%);
+    bottom: 16rem; left: -3rem;
+    animation-duration: 14s;
+    animation-delay: -6s;
+  }
+
+  @keyframes glow-drift {
+    0%, 100% { opacity: 0.8; transform: translateY(0) scale(1); }
+    50%       { opacity: 1.0; transform: translateY(-14px) scale(1.06); }
+  }
+
+  .nf-glow.red { animation: glow-drift-center 8s ease-in-out infinite; }
+  @keyframes glow-drift-center {
+    0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+    50%       { opacity: 1.0; transform: translateX(-50%) scale(1.07); }
+  }
+
+  /* ── FLOATING NOODLE STRANDS ─────────────────── */
+  .nf-strands {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .nf-strand {
+    position: absolute;
+    bottom: -20px;
+    border-radius: 999px;
+    opacity: 0;
+    animation: strand-float linear infinite;
+  }
+
+  .nf-strand:nth-child(1)  { left:  5%; width:2px; height:52px; background:linear-gradient(180deg,transparent,rgba(208,41,10,0.7),transparent);  animation-duration:10s; animation-delay:0s;    }
+  .nf-strand:nth-child(2)  { left: 12%; width:1px; height:36px; background:linear-gradient(180deg,transparent,rgba(255,251,245,0.5),transparent); animation-duration:14s; animation-delay:2.1s;  }
+  .nf-strand:nth-child(3)  { left: 19%; width:3px; height:64px; background:linear-gradient(180deg,transparent,rgba(201,138,45,0.65),transparent); animation-duration: 9s; animation-delay:4.4s;  }
+  .nf-strand:nth-child(4)  { left: 28%; width:2px; height:44px; background:linear-gradient(180deg,transparent,rgba(208,41,10,0.5),transparent);  animation-duration:12s; animation-delay:1.3s;  }
+  .nf-strand:nth-child(5)  { left: 37%; width:1px; height:72px; background:linear-gradient(180deg,transparent,rgba(255,251,245,0.4),transparent); animation-duration:11s; animation-delay:5.7s;  }
+  .nf-strand:nth-child(6)  { left: 45%; width:2px; height:48px; background:linear-gradient(180deg,transparent,rgba(201,138,45,0.55),transparent); animation-duration:13s; animation-delay:0.8s;  }
+  .nf-strand:nth-child(7)  { left: 54%; width:3px; height:58px; background:linear-gradient(180deg,transparent,rgba(208,41,10,0.6),transparent);  animation-duration: 8s; animation-delay:3.2s;  }
+  .nf-strand:nth-child(8)  { left: 63%; width:1px; height:40px; background:linear-gradient(180deg,transparent,rgba(255,251,245,0.45),transparent);animation-duration:15s; animation-delay:6.1s;  }
+  .nf-strand:nth-child(9)  { left: 72%; width:2px; height:66px; background:linear-gradient(180deg,transparent,rgba(201,138,45,0.6),transparent);  animation-duration:10s; animation-delay:1.9s;  }
+  .nf-strand:nth-child(10) { left: 81%; width:3px; height:50px; background:linear-gradient(180deg,transparent,rgba(208,41,10,0.55),transparent); animation-duration:12s; animation-delay:4.8s;  }
+  .nf-strand:nth-child(11) { left: 89%; width:1px; height:42px; background:linear-gradient(180deg,transparent,rgba(255,251,245,0.35),transparent);animation-duration: 9s; animation-delay:2.5s;  }
+  .nf-strand:nth-child(12) { left: 95%; width:2px; height:60px; background:linear-gradient(180deg,transparent,rgba(201,138,45,0.5),transparent);  animation-duration:11s; animation-delay:7.3s;  }
+
+  @keyframes strand-float {
+    0%   { transform: translateY(0)    rotate(-6deg) scaleX(1.0); opacity: 0; }
+    8%   { opacity: 1; }
+    82%  { opacity: 0.85; }
+    100% { transform: translateY(-88vh) rotate(10deg) scaleX(0.5); opacity: 0; }
+  }
+
+  /* ── HIMALAYAN MOUNTAINS ─────────────────────── */
+  .nf-mountains {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 44%;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .nf-mountains svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ── CONTENT ─────────────────────────────────── */
+  .nf-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 660px;
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .nf-badge {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: var(--saffron-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+  }
+
+  .nf-badge::before, .nf-badge::after {
+    content: '';
+    display: inline-block;
+    width: 2.4rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.45;
+  }
+
+  .nf-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 9vw, 6rem);
+    line-height: 1.0;
+    color: var(--cream);
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  .nf-headline .chili {
+    color: var(--chili-red);
+    display: block;
+    text-shadow: 0 0 40px rgba(208,41,10,0.45);
+  }
+
+  .nf-sub {
+    color: rgba(247, 239, 228, 0.55);
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 46ch;
+    margin: 0 auto;
+  }
+
+  /* ── HEAT METER ──────────────────────────────── */
+  .nf-heat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+  }
+
+  .nf-heat-label {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(247,239,228,0.32);
+  }
+
+  .nf-pips {
+    display: flex;
+    gap: 5px;
+  }
+
+  .nf-pip {
+    width: 14px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(255,251,245,0.08);
+    border: 1px solid rgba(208,41,10,0.22);
+  }
+
+  .nf-pip.on {
+    background: var(--chili-red);
+    border-color: var(--chili-red);
+    animation: pip-flicker 2s ease-in-out infinite;
+  }
+
+  .nf-pip.on:nth-child(1) { animation-delay: 0.0s; }
+  .nf-pip.on:nth-child(2) { animation-delay: 0.35s; }
+  .nf-pip.on:nth-child(3) { animation-delay: 0.7s; }
+  .nf-pip.on:nth-child(4) { animation-delay: 1.05s; }
+
+  @keyframes pip-flicker {
+    0%, 100% { opacity: 1;   box-shadow: 0 0 6px  rgba(208,41,10,0.7); }
+    50%       { opacity: 0.55; box-shadow: 0 0 12px rgba(208,41,10,1.0); }
+  }
+
+  /* ── DIVIDER ─────────────────────────────────── */
+  .nf-rule {
+    width: 3rem;
+    height: 1px;
+    background: rgba(201,138,45, 0.3);
+    margin: 0 auto;
+  }
+
+  /* ── ACTION BUTTONS ──────────────────────────── */
+  .nf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+  }
+
+  .nf-btn {
+    text-decoration: none;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    padding: 0.82rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: transform 0.2s ease, background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+
+  .nf-btn.primary {
+    background: var(--chili-red);
+    color: #fff;
+    box-shadow: 0 4px 22px rgba(208,41,10,0.4);
+  }
+
+  .nf-btn.primary:hover {
+    background: var(--deep-chili);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(208,41,10,0.6);
+    color: #fff;
+  }
+
+  .nf-btn.ghost {
+    background: transparent;
+    color: rgba(247,239,228,0.65);
+    border-color: rgba(247,239,228,0.14);
+  }
+
+  .nf-btn.ghost:hover {
+    border-color: var(--saffron-gold);
+    color: var(--saffron-gold);
+    transform: translateY(-2px);
+  }
+
+  /* ── FOOTER CAPTION ──────────────────────────── */
+  .nf-caption {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(247,239,228,0.2);
+    margin-top: 0.4rem;
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────── */
+  @media (max-width: 768px) {
+    .nf-shell {
+      margin: -20px -16px -20px;
+      padding: 4rem 1.2rem 9rem;
+      min-height: 82vh;
+    }
+
+    .nf-headline { font-size: 2.8rem; }
+    .nf-ghost-num { -webkit-text-stroke-width: 1px; }
+    .nf-mountains { height: 32%; }
+  }
+
+  /* ── HIDE OLD SHELL (just in case) ───────────── */
+  .notfound-shell { display: none !important; }
+</style>
+
+<!-- Floating noodle strand embers -->
+<div class="nf-strands" aria-hidden="true">
+  <span class="nf-strand"></span><span class="nf-strand"></span><span class="nf-strand"></span>
+  <span class="nf-strand"></span><span class="nf-strand"></span><span class="nf-strand"></span>
+  <span class="nf-strand"></span><span class="nf-strand"></span><span class="nf-strand"></span>
+  <span class="nf-strand"></span><span class="nf-strand"></span><span class="nf-strand"></span>
+</div>
+
+<div class="nf-shell">
+
+  <!-- Ghost watermark 404 -->
+  <div class="nf-ghost" aria-hidden="true">
+    <span class="nf-ghost-num">404</span>
+  </div>
+
+  <!-- Atmospheric light bleed -->
+  <span class="nf-glow red"    aria-hidden="true"></span>
+  <span class="nf-glow gold-r" aria-hidden="true"></span>
+  <span class="nf-glow gold-l" aria-hidden="true"></span>
+
+  <!-- Himalayan mountain silhouette -->
+  <div class="nf-mountains" aria-hidden="true">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Distant back range -->
+      <path d="M0 360 L90 260 L160 300 L240 220 L320 275 L400 190 L460 240 L530 165 L600 215 L660 145 L730 200 L800 130 L868 185 L930 110 L1000 170 L1065 105 L1135 165 L1200 115 L1268 175 L1340 130 L1440 200 L1440 400 L0 400 Z"
+            fill="rgba(28,16,7,0.38)"/>
+      <!-- Mid range with snow hints -->
+      <path d="M0 400 L60 310 L130 355 L210 280 L285 330 L350 255 L415 305 L480 230 L545 278 L610 205 L672 258 L730 184 L790 235 L848 172 L908 222 L968 158 L1028 210 L1090 148 L1148 200 L1210 155 L1272 208 L1330 165 L1390 218 L1440 185 L1440 400 Z"
+            fill="rgba(28,16,7,0.62)"/>
+      <!-- Snow caps on tallest peaks (subtle) -->
+      <polygon points="480,230 468,244 475,250 483,238 491,252 498,242 490,230" fill="rgba(247,239,228,0.14)"/>
+      <polygon points="610,205 597,220 604,227 612,213 621,228 629,218 620,205" fill="rgba(247,239,228,0.18)"/>
+      <polygon points="730,184 717,199 724,206 732,193 740,207 748,196 739,184" fill="rgba(247,239,228,0.16)"/>
+      <polygon points="908,158 895,174 902,181 910,167 919,182 927,170 918,158" fill="rgba(247,239,228,0.12)"/>
+      <polygon points="1090,148 1077,164 1084,170 1092,157 1101,171 1109,160 1100,148" fill="rgba(247,239,228,0.15)"/>
+      <!-- Darkest foreground ridge -->
+      <path d="M0 400 L80 360 L160 385 L240 352 L320 378 L400 345 L480 370 L560 340 L640 365 L720 338 L800 362 L880 332 L960 358 L1040 328 L1120 355 L1200 325 L1280 352 L1360 330 L1440 355 L1440 400 Z"
+            fill="rgba(28,16,7,0.92)"/>
+    </svg>
+  </div>
+
+  <!-- Main content -->
+  <main class="nf-content" role="main">
+    <p class="nf-badge">Error 404 &middot; Trail Closed</p>
+
+    <h1 class="nf-headline">
+      Lost between
+      <span class="chili">Kathmandu</span>
+    </h1>
+
+    <p class="nf-sub">The page you searched for has wandered off the spice trail somewhere in the Himalayas. Don't worry &mdash; the noodles are still hot.</p>
+
+    <div class="nf-heat" aria-label="404 heat level: very spicy" aria-hidden="true">
+      <span class="nf-heat-label">heat index</span>
+      <div class="nf-pips">
+        <span class="nf-pip on"></span>
+        <span class="nf-pip on"></span>
+        <span class="nf-pip on"></span>
+        <span class="nf-pip on"></span>
+        <span class="nf-pip"></span>
+      </div>
+      <span class="nf-heat-label">page not found</span>
+    </div>
+
+    <div class="nf-rule"></div>
+
+    <div class="nf-actions">
+      <a class="nf-btn primary" href="/products/">Browse Noodles</a>
+      <a class="nf-btn ghost"   href="/articles/">Spice Guides</a>
+      <a class="nf-btn ghost"   href="/">Go Home</a>
+      <a class="nf-btn ghost"   href="/cart/">View Cart</a>
+    </div>
+
+    <p class="nf-caption">SpicyNoodles &middot; From the footstep of the Himalayas to your door</p>
+  </main>
+
+</div>
+
+<!-- Remove any old notfound HTML if it somehow survived -->
+<style>.notfound-shell{display:none!important}</style>
