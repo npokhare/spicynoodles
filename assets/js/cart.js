@@ -5,6 +5,7 @@
 const CART_KEY = 'spicynoodles_cart';
 const SHIPPING_COST = 3.95;
 const FREE_SHIPPING_THRESHOLD = 50;
+const DEFAULT_PAYMENT_METHOD = 'Cash on Delivery';
 
 let _cartPageListenerAdded = false;
 
@@ -199,6 +200,10 @@ function renderCartPage() {
         <div class="cart-total-row">
           <span>Total</span><span>&euro; ${grandTotal}</span>
         </div>
+        <div class="cart-payment-row" style="display:flex;justify-content:space-between;align-items:center;gap:0.75rem;font-family:'DM Mono',ui-monospace,monospace;font-size:0.64rem;letter-spacing:0.08em;text-transform:uppercase;color:#8A7060;border-top:1px solid rgba(74,48,32,0.12);padding-top:0.6rem;">
+          <span>Payment</span>
+          <span style="background:#EBF4EA;color:#3A6B35;border:1px solid rgba(58,107,53,0.3);border-radius:999px;padding:0.16rem 0.52rem;">${DEFAULT_PAYMENT_METHOD}</span>
+        </div>
         <div class="cart-cta-stack">
           <a href="#" id="cart-wa-btn" target="_blank" rel="noopener" class="cart-btn-wa" onclick="return handleOrderClick(event,'wa')">
             &#x1F4AC; Order via WhatsApp
@@ -248,8 +253,8 @@ function renderEmptyCart() {
     <div class="cart-empty">
       <p class="cart-empty-icon">&#x1F6D2;</p>
       <h2>Your cart is empty</h2>
-      <p>Browse our noodles and add something delicious.</p>
-      <a href="/products/" class="cart-empty-cta">Browse noodles &rarr;</a>
+      <p>Browse our noodles and achar, then add your favorites.</p>
+      <a href="/products/" class="cart-empty-cta">Browse all products &rarr;</a>
     </div>`;
 }
 
@@ -316,25 +321,27 @@ function handleOrderClick(e, type) {
 function buildWhatsAppUrl(cart, total, shipping, address) {
   const lines = cart.map(i => `  • ${i.title} × ${i.qty}  (€ ${(i.price * i.qty).toFixed(2)})`).join('\n');
   const shippingLine = shipping === 0 ? '  Shipping: Free 🎉' : `  Shipping: € ${shipping.toFixed(2)}`;
+  const paymentLine = `  Payment: ${DEFAULT_PAYMENT_METHOD}`;
   let addrBlock = '';
   if (address && (address.name || address.street)) {
     addrBlock = `\n\nShip to:\n  ${address.name}\n  ${address.street}\n  ${address.postcode} ${address.city}`;
     if (address.phone) addrBlock += `\n  ${address.phone}`;
   }
-  const body = `Hi SpicyNoodles! 👋\n\nI'd like to place an order:\n\n${lines}\n\n${shippingLine}\nTotal: € ${total}${addrBlock}\n\nPlease confirm availability. Thanks!`;
+  const body = `Hi SpicyNoodles! 👋\n\nI'd like to place an order:\n\n${lines}\n\n${shippingLine}\n${paymentLine}\nTotal: € ${total}${addrBlock}\n\nPlease confirm availability. Thanks!`;
   return `https://wa.me/31621153774?text=${encodeURIComponent(body)}`;
 }
 
 function buildEmailUrl(cart, total, shipping, address) {
   const lines = cart.map(i => `  - ${i.title} x${i.qty}  (EUR ${(i.price * i.qty).toFixed(2)})`).join('\n');
   const shippingLine = shipping === 0 ? '  Shipping: Free' : `  Shipping: EUR ${shipping.toFixed(2)}`;
+  const paymentLine = `  Payment: ${DEFAULT_PAYMENT_METHOD}`;
   const subject = `Order inquiry — SpicyNoodles (€ ${total})`;
   let addrBlock = '';
   if (address && (address.name || address.street)) {
     addrBlock = `\n\nShipping address:\n  Name: ${address.name}\n  Street: ${address.street}\n  Postcode: ${address.postcode}\n  City: ${address.city}`;
     if (address.phone) addrBlock += `\n  Phone: ${address.phone}`;
   }
-  const body = `Hi,\n\nI would like to order the following:\n\n${lines}\n\n${shippingLine}\nTotal: EUR ${total}${addrBlock}\n\nPlease confirm stock availability before payment.\n\nThank you!`;
+  const body = `Hi,\n\nI would like to order the following:\n\n${lines}\n\n${shippingLine}\n${paymentLine}\nTotal: EUR ${total}${addrBlock}\n\nPlease confirm stock availability before payment.\n\nThank you!`;
   return `mailto:niru.nirajanpokharel@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 

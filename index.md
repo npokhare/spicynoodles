@@ -675,10 +675,11 @@ title: SpicyNoodles
     <div class="home-hero-grid">
       <div>
         <span class="section-eyebrow">Nepal-inspired &middot; Small batch &middot; Netherlands</span>
-        <h1 class="section-title display">Authentic Nepal-Inspired Noodles</h1>
-        <p class="section-copy" style="margin-top:1.2rem;font-size:1.05rem;line-height:1.75;">Welcome to SpicyNoodles &mdash; bold Himalayan flavors in every pack. Browse our curated batch selection and order directly via WhatsApp.</p>
+        <h1 class="section-title display">Authentic Nepal- Noodles &amp; Achar</h1>
+        <p class="section-copy" style="margin-top:1.2rem;font-size:1.05rem;line-height:1.75;">Welcome to SpicyNoodles &mdash; from instant noodles to spicy achar jars, discover bold Himalayan flavors and order with easy stock confirmation.</p>
         <div class="hero-actions">
-          <a class="hero-btn hero-btn-primary" href="{{ '/noodles/' | relative_url }}">Browse all noodles</a>
+          <a class="hero-btn hero-btn-primary" href="{{ '/products/' | relative_url }}">Shop all products</a>
+          <a class="hero-btn hero-btn-ghost" href="{{ '/achar/' | relative_url }}">Browse achar</a>
         </div>
       </div>
       <aside class="hero-note-box" aria-label="Ordering promise">
