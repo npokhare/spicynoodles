@@ -25,6 +25,32 @@ layout: default
     border-bottom: 1px solid rgba(74, 48, 32, 0.1);
   }
 
+  .catalog-switcher {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .catalog-switcher a {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    border: 1px solid rgba(74, 48, 32, 0.2);
+    color: var(--earth);
+    background: rgba(255, 255, 255, 0.82);
+    padding: 0.28rem 0.64rem;
+    text-decoration: none;
+  }
+
+  .catalog-switcher a.is-active {
+    background: var(--chili-red);
+    color: #fff;
+    border-color: var(--chili-red);
+  }
+
   .catalog-eyebrow {
     display: inline-block;
     padding: 0.22rem 0.7rem;
@@ -342,10 +368,26 @@ layout: default
 
 <div class="catalog-shell">
 
+  {% assign is_all = false %}
+  {% assign is_noodles = false %}
+  {% assign is_achar = false %}
+  {% if page.catalog_type == 'noodles' %}
+    {% assign is_noodles = true %}
+  {% elsif page.catalog_type == 'achar' %}
+    {% assign is_achar = true %}
+  {% else %}
+    {% assign is_all = true %}
+  {% endif %}
+
   <header class="catalog-header">
     <span class="catalog-eyebrow">{{ page.catalog_eyebrow | default: 'Nepal-inspired · Small batch · Netherlands' }}</span>
     <h1 class="catalog-title">{{ page.catalog_title | default: page.title | default: 'Our Collection' }}</h1>
     <p class="catalog-desc">{{ page.catalog_desc | default: 'Browse the current batch below — availability is confirmed before any payment.' }}</p>
+    <nav class="catalog-switcher" aria-label="Browse categories">
+      <a href="{{ '/products/' | relative_url }}" class="{% if is_all %}is-active{% endif %}">All Products</a>
+      <a href="{{ '/noodles/' | relative_url }}" class="{% if is_noodles %}is-active{% endif %}">Noodles</a>
+      <a href="{{ '/achar/' | relative_url }}" class="{% if is_achar %}is-active{% endif %}">Achar</a>
+    </nav>
   </header>
 
   <div class="products-grid">
