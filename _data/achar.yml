@@ -15,7 +15,7 @@ products:
     heatLevel: 4
     available: true
     category: "Achar"
-    weight: "350g"
+    weight: "380g"
     sku: "AHCB-001"
     countryOfOrigin: "Nepal"
     shelfLife: "18 months"
@@ -47,4 +47,28 @@ products:
       "Texture": "Thick chutney-style paste"
       "Main Ingredient": "Timur Pepper"
       "Contains": "Spices, Mustard Oil, Salt"
+      "Gluten-Free": "Yes"
+
+  - id: 7
+    title: "Timmur Chop Achar"
+    folder: "timmur-chop-achar"
+    brandName: "Aama Ko Achar"
+    brandLogo: "https://drive.brodox.com/uploads/898/logo.png"
+    description: "Bold Nepali timmur chop achar with citrusy pepper aroma and savory punch. Great with noodles, rice, and snacks."
+    image: "/assets/images/aama-timmur-chop.webp"
+    price: 7.99
+    currency: "Euro"
+    quantityPerPacket: "200g jar"
+    dietary: "Vegetarian"
+    heatLevel: 3
+    available: true
+    category: "Achar"
+    weight: "200g"
+    sku: "ATMC-001"
+    countryOfOrigin: "Nepal"
+    shelfLife: "18 months"
+    specifications:
+      "Texture": "Chunky chili-pepper blend"
+      "Main Ingredient": "Timmur Pepper"
+      "Contains": "Mustard Oil, Spices, Salt"
       "Gluten-Free": "Yes"
