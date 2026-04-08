@@ -9,6 +9,25 @@ const DEFAULT_PAYMENT_METHOD = 'Cash on Delivery';
 
 let _cartPageListenerAdded = false;
 
+function getPackKey(product) {
+  if (!product || !product.packKey) return 'single';
+  return String(product.packKey);
+}
+
+function getCartItemKey(product) {
+  return String(product.id) + '::' + getPackKey(product);
+}
+
+function getDisplayTitle(item) {
+  if (item && item.packCount && item.packCount > 0) {
+    return item.title + ' (X' + item.packCount + ')';
+  }
+  if (item && item.packLabel) {
+    return item.title + ' (' + item.packLabel + ')';
+  }
+  return item.title;
+}
+
 /* ── Shipping helpers ────────────────────────────────────── */
 function getShipping(subtotal) {
   return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
@@ -36,27 +55,43 @@ function dispatchCartChange() {
 /* ── Cart operations ─────────────────────────────────────── */
 function addToCart(product) {
   const cart = getCart();
-  const existing = cart.find(item => item.id === product.id);
+  const cartKey = getCartItemKey(product);
+  const existing = cart.find(item => item.cartKey === cartKey);
   if (existing) {
     existing.qty += 1;
   } else {
-    cart.push({ ...product, qty: 1 });
+    cart.push({
+      ...product,
+      cartKey,
+      packKey: getPackKey(product),
+      packLabel: product.packLabel || '',
+      packCount: parseInt(product.packCount || 0, 10) || 0,
+      qty: 1
+    });
   }
   saveCart(cart);
   return existing ? existing.qty : 1;
 }
 
-function removeFromCart(id) {
-  const cart = getCart().filter(item => item.id !== id);
+function removeFromCart(cartKey) {
+  const key = String(cartKey);
+  const cart = getCart().filter(item => {
+    const itemKey = item.cartKey || (String(item.id) + '::single');
+    return itemKey !== key;
+  });
   saveCart(cart);
 }
 
-function updateQty(id, qty) {
+function updateQty(cartKey, qty) {
+  const key = String(cartKey);
   const cart = getCart();
-  const item = cart.find(i => i.id === id);
+  const item = cart.find(i => {
+    const itemKey = i.cartKey || (String(i.id) + '::single');
+    return itemKey === key;
+  });
   if (!item) return;
   if (qty <= 0) {
-    removeFromCart(id);
+    removeFromCart(key);
     return;
   }
   item.qty = qty;
@@ -93,13 +128,24 @@ function initAddToCartButtons() {
       e.preventDefault();
       e.stopPropagation();
 
+      var selectedPackOption = null;
+      if (this.dataset.packSelectId) {
+        var select = document.getElementById(this.dataset.packSelectId);
+        if (select && select.selectedOptions && select.selectedOptions.length) {
+          selectedPackOption = select.selectedOptions[0];
+        }
+      }
+
       const product = {
         id:       parseInt(this.dataset.id),
         title:    this.dataset.title,
-        price:    parseFloat(this.dataset.price),
+        price:    selectedPackOption ? parseFloat(selectedPackOption.dataset.price) : parseFloat(this.dataset.price),
         image:    this.dataset.image,
         folder:   this.dataset.folder,
-        weight:   this.dataset.weight || ''
+        weight:   selectedPackOption ? (selectedPackOption.dataset.weight || this.dataset.weight || '') : (this.dataset.weight || ''),
+        packKey:  selectedPackOption ? (selectedPackOption.value || 'single') : 'single',
+        packLabel:selectedPackOption ? (selectedPackOption.dataset.label || '') : '',
+        packCount:selectedPackOption ? parseInt(selectedPackOption.dataset.count || '0', 10) : 0
       };
 
       const newQty = addToCart(product);
@@ -188,7 +234,7 @@ function renderCartPage() {
       <aside class="cart-summary">
         <p class="cart-summary-label">Order summary</p>
         <div class="cart-summary-rows">
-          ${cart.map(i => `<div class="cart-summary-row"><span>${i.title} &times; ${i.qty}</span><span>&euro; ${(i.price * i.qty).toFixed(2)}</span></div>`).join('')}
+          ${cart.map(i => `<div class="cart-summary-row"><span>${getDisplayTitle(i)} &times; ${i.qty}</span><span>&euro; ${(i.price * i.qty).toFixed(2)}</span></div>`).join('')}
         </div>
         <div class="cart-subtotal-row">
           <span>Subtotal</span><span>&euro; ${subtotalStr}</span>
@@ -217,34 +263,58 @@ function renderCartPage() {
     </div>`;
 
   root.querySelectorAll('[data-action="remove"]').forEach(btn => {
-    btn.addEventListener('click', () => removeFromCart(parseInt(btn.dataset.cartId)));
+    btn.addEventListener('click', () => removeFromCart(btn.dataset.cartKey));
+  });
+  root.querySelectorAll('[data-action="qty-decrease"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.cartKey;
+      const item = cart.find(i => (i.cartKey || (String(i.id) + '::single')) === key);
+      if (!item) return;
+      updateQty(key, item.qty - 1);
+    });
+  });
+  root.querySelectorAll('[data-action="qty-increase"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.cartKey;
+      const item = cart.find(i => (i.cartKey || (String(i.id) + '::single')) === key);
+      if (!item) return;
+      updateQty(key, item.qty + 1);
+    });
   });
   root.querySelectorAll('[data-action="qty"]').forEach(input => {
-    input.addEventListener('change', () => updateQty(parseInt(input.dataset.cartId), parseInt(input.value)));
+    input.addEventListener('change', () => updateQty(input.dataset.cartKey, parseInt(input.value)));
   });
 }
 
 function renderCartItem(item) {
+  const cartKey = item.cartKey || (String(item.id) + '::single');
+  const safeKey = cartKey.replace(/"/g, '&quot;');
+  const displayTitle = getDisplayTitle(item);
+  const details = [item.weight || ''];
+  if (item.packLabel) {
+    details.unshift(item.packLabel);
+  }
+  const detailLine = details.filter(Boolean).join(' · ');
   return `
     <div class="cart-item">
       <div class="cart-item-img-wrap">
-        <img src="${item.image}" alt="${item.title}">
+        <img src="${item.image}" alt="${displayTitle}">
       </div>
       <div class="cart-item-info">
-        <p class="cart-item-title">${item.title}</p>
-        <p class="cart-item-weight">${item.weight}</p>
+        <p class="cart-item-title">${displayTitle}</p>
+        <p class="cart-item-weight">${detailLine}</p>
         <p class="cart-item-unit">&euro; ${item.price.toFixed(2)} each</p>
       </div>
       <div class="cart-item-controls">
-        <button class="qty-btn" onclick="updateQty(${item.id}, ${item.qty - 1})">&#x2212;</button>
+        <button class="qty-btn" data-action="qty-decrease" data-cart-key="${safeKey}">&#x2212;</button>
         <input type="number" class="qty-input" value="${item.qty}" min="1" max="99"
-               data-action="qty" data-cart-id="${item.id}">
-        <button class="qty-btn" onclick="updateQty(${item.id}, ${item.qty + 1})">&#x2B;</button>
+               data-action="qty" data-cart-key="${safeKey}">
+        <button class="qty-btn" data-action="qty-increase" data-cart-key="${safeKey}">&#x2B;</button>
       </div>
       <div class="cart-item-line-total">
         &euro; ${(item.price * item.qty).toFixed(2)}
       </div>
-      <button class="cart-item-remove" data-action="remove" data-cart-id="${item.id}" title="Remove">&#x2715;</button>
+      <button class="cart-item-remove" data-action="remove" data-cart-key="${safeKey}" title="Remove">&#x2715;</button>
     </div>`;
 }
 
@@ -319,7 +389,7 @@ function handleOrderClick(e, type) {
 
 /* ── WhatsApp & Email URL builders ────────────────────────── */
 function buildWhatsAppUrl(cart, total, shipping, address) {
-  const lines = cart.map(i => `  • ${i.title} × ${i.qty}  (€ ${(i.price * i.qty).toFixed(2)})`).join('\n');
+  const lines = cart.map(i => `  • ${getDisplayTitle(i)} × ${i.qty}  (€ ${(i.price * i.qty).toFixed(2)})`).join('\n');
   const shippingLine = shipping === 0 ? '  Shipping: Free 🎉' : `  Shipping: € ${shipping.toFixed(2)}`;
   const paymentLine = `  Payment: ${DEFAULT_PAYMENT_METHOD}`;
   let addrBlock = '';
@@ -332,7 +402,7 @@ function buildWhatsAppUrl(cart, total, shipping, address) {
 }
 
 function buildEmailUrl(cart, total, shipping, address) {
-  const lines = cart.map(i => `  - ${i.title} x${i.qty}  (EUR ${(i.price * i.qty).toFixed(2)})`).join('\n');
+  const lines = cart.map(i => `  - ${getDisplayTitle(i)} x${i.qty}  (EUR ${(i.price * i.qty).toFixed(2)})`).join('\n');
   const shippingLine = shipping === 0 ? '  Shipping: Free' : `  Shipping: EUR ${shipping.toFixed(2)}`;
   const paymentLine = `  Payment: ${DEFAULT_PAYMENT_METHOD}`;
   const subject = `Order inquiry — SpicyNoodles (€ ${total})`;

@@ -250,6 +250,44 @@ layout: default
     align-items: center;
   }
 
+  .pdx-buy-row > * {
+    min-width: 0;
+  }
+
+  .pdx-buy-row.has-pack {
+    grid-template-columns: auto minmax(170px, 1fr) auto;
+    grid-template-areas:
+      'price pack qty'
+      'cta cta cta';
+    row-gap: 0.65rem;
+  }
+
+  .pdx-buy-row.has-pack .pdx-price { grid-area: price; }
+  .pdx-buy-row.has-pack .pdx-pack  { grid-area: pack; }
+  .pdx-buy-row.has-pack .pdx-qty   { grid-area: qty; }
+  .pdx-buy-row.has-pack .pdx-buy-btn {
+    grid-area: cta;
+    justify-self: stretch;
+  }
+
+  .pdx-pack {
+    min-width: 190px;
+  }
+
+  .pdx-pack select {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid rgba(74, 48, 32, 0.22);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--earth);
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0 0.9rem;
+  }
+
   .pdx-price {
     font-family: 'Playfair Display', serif;
     font-size: clamp(2rem, 3.2vw, 2.7rem);
@@ -307,6 +345,7 @@ layout: default
     letter-spacing: 0.02em;
     padding: 0 1.5rem;
     justify-self: stretch;
+    width: 100%;
     transition: background 0.2s, transform 0.2s;
   }
 
@@ -505,6 +544,13 @@ layout: default
       gap: 0.7rem;
     }
 
+    .pdx-buy-row.has-pack {
+      grid-template-columns: auto minmax(150px, 1fr) auto;
+      grid-template-areas:
+        'price pack qty'
+        'cta cta cta';
+    }
+
     .pdx-spec-grid {
       grid-template-columns: 1fr;
     }
@@ -512,9 +558,32 @@ layout: default
 
   @media (max-width: 640px) {
     .pdx-buy-row {
-      grid-template-columns: auto auto 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 0.5rem;
       align-items: center;
+    }
+
+    .pdx-price {
+      grid-column: 1 / 3;
+      align-self: center;
+      padding-top: 0;
+    }
+
+    .pdx-buy-row.has-pack .pdx-price,
+    .pdx-buy-row.has-pack .pdx-pack,
+    .pdx-buy-row.has-pack .pdx-qty,
+    .pdx-buy-row.has-pack .pdx-buy-btn {
+      grid-area: auto;
+    }
+
+    .pdx-pack {
+      min-width: 0;
+    }
+
+    .pdx-pack select {
+      min-height: 42px;
+      font-size: 0.57rem;
+      padding: 0 0.7rem;
     }
 
     .pdx-price {
@@ -537,6 +606,7 @@ layout: default
     }
 
     .pdx-buy-btn {
+      grid-column: 1 / 3;
       min-height: 42px;
       font-size: 0.9rem;
       padding: 0 0.8rem;
@@ -595,8 +665,18 @@ layout: default
           </div>
         </div>
 
-        <div class="pdx-buy-row">
+        <div class="pdx-buy-row{% if product.packs and product.packs.size > 0 %} has-pack{% endif %}">
           <p class="pdx-price">&euro; {{ product.price }}</p>
+          {% if product.packs and product.packs.size > 0 %}
+          <div class="pdx-pack">
+            <select id="pdx-pack-select" aria-label="Select package size">
+              {% for pack in product.packs %}
+              {% assign pack_count = pack.count | default: 1 %}
+              <option value="{{ pack.key | default: forloop.index }}" data-price="{{ pack.price }}" data-label="X{{ pack_count }}" data-weight="{{ pack.weight | default: product.weight | escape }}" data-count="{{ pack_count }}">X{{ pack_count }} · &euro; {{ pack.price }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endif %}
           <div class="pdx-qty" aria-label="Quantity selector">
             <button type="button" id="pdx-qty-minus" aria-label="Decrease quantity" {% unless product.available %}disabled{% endunless %}>&#8722;</button>
             <input type="text" id="pdx-qty-value" value="1" readonly {% unless product.available %}disabled aria-disabled="true"{% endunless %}>
@@ -687,15 +767,44 @@ layout: default
     var plusBtn = document.getElementById('pdx-qty-plus');
     var qtyInput = document.getElementById('pdx-qty-value');
     var addBtn = document.getElementById('pdx-add-btn');
+    var priceEl = document.querySelector('.pdx-price');
+    var packSelect = document.getElementById('pdx-pack-select');
     var bundleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-add-bundle]'));
     var bundleAllBtn = document.getElementById('pdx-add-bundle-all');
 
     if (!minusBtn || !plusBtn || !qtyInput || !addBtn) return;
 
-    function getExistingQtyFromCart(id) {
+    function getCartKey(id, packKey) {
+      return String(id) + '::' + String(packKey || 'single');
+    }
+
+    function getSelectedPack() {
+      if (!packSelect || !packSelect.selectedOptions || !packSelect.selectedOptions.length) {
+        return {
+          key: 'single',
+          count: 1,
+          label: 'X1',
+          price: parseFloat({{ product.price | default: 0 | jsonify }}),
+          weight: {{ product.weight | default: '' | jsonify }}
+        };
+      }
+      var option = packSelect.selectedOptions[0];
+      return {
+        key: option.value || 'single',
+        count: parseInt(option.dataset.count || '1', 10),
+        label: option.dataset.label || ('X' + String(parseInt(option.dataset.count || '1', 10))),
+        price: parseFloat(option.dataset.price),
+        weight: option.dataset.weight || {{ product.weight | default: '' | jsonify }}
+      };
+    }
+
+    function getExistingQtyFromCart(cartKey) {
       try {
         var cart = JSON.parse(localStorage.getItem('spicynoodles_cart')) || [];
-        var item = cart.find(function (entry) { return entry.id === id; });
+        var item = cart.find(function (entry) {
+          var entryKey = entry.cartKey || (String(entry.id) + '::single');
+          return entryKey === cartKey;
+        });
         return item ? Math.max(minQty, parseInt(item.qty, 10) || minQty) : 0;
       } catch (err) {
         return 0;
@@ -703,11 +812,24 @@ layout: default
     }
 
     if (isAvailable) {
-      var existingQty = getExistingQtyFromCart(productId);
+      var existingQty = getExistingQtyFromCart(getCartKey(productId, getSelectedPack().key));
       if (existingQty > 0) {
         qty = existingQty;
         maxQty = Math.max(maxQty, existingQty);
       }
+    }
+
+    function renderPack() {
+      var pack = getSelectedPack();
+      if (priceEl && !isNaN(pack.price)) {
+        priceEl.innerHTML = '&euro; ' + pack.price.toFixed(2);
+      }
+      if (isAvailable) {
+        var existingQty = getExistingQtyFromCart(getCartKey(productId, pack.key));
+        qty = existingQty > 0 ? existingQty : 1;
+        maxQty = Math.max(20, qty);
+      }
+      renderQty();
     }
 
     function renderQty() {
@@ -734,21 +856,25 @@ layout: default
 
     addBtn.addEventListener('click', function () {
       if (addBtn.disabled) return;
+      var selectedPack = getSelectedPack();
       var product = {
         id: {{ product.id | default: 0 }},
         title: {{ product.title | jsonify }},
-        price: {{ product.price | default: 0 }},
+        price: selectedPack.price,
         image: {{ product.image | relative_url | jsonify }},
         folder: {{ product.folder | jsonify }},
-        weight: {{ product.weight | default: '' | jsonify }}
+        weight: selectedPack.weight,
+        packKey: selectedPack.key,
+        packLabel: selectedPack.label,
+        packCount: selectedPack.count
       };
 
       if (typeof addToCart === 'function') {
-        var existingQty = getExistingQtyFromCart(product.id);
+        var existingQty = getExistingQtyFromCart(getCartKey(product.id, selectedPack.key));
         var actionLabel = 'Added';
 
         if (existingQty > 0 && typeof updateQty === 'function') {
-          updateQty(product.id, qty);
+          updateQty(getCartKey(product.id, selectedPack.key), qty);
           actionLabel = 'Updated';
         } else {
           for (var i = 0; i < qty; i += 1) {
@@ -766,6 +892,10 @@ layout: default
       }
     });
 
+    if (packSelect) {
+      packSelect.addEventListener('change', renderPack);
+    }
+
     bundleButtons.forEach(function (btn) {
       btn.addEventListener('click', function () {
         if (btn.disabled || typeof addToCart !== 'function') return;
@@ -776,7 +906,8 @@ layout: default
           price: parseFloat(btn.dataset.price),
           image: btn.dataset.image,
           folder: btn.dataset.folder,
-          weight: btn.dataset.weight || ''
+          weight: btn.dataset.weight || '',
+          packCount: 0
         };
 
         addToCart(bundleProduct);
@@ -803,7 +934,8 @@ layout: default
             price: parseFloat(btn.dataset.price),
             image: btn.dataset.image,
             folder: btn.dataset.folder,
-            weight: btn.dataset.weight || ''
+            weight: btn.dataset.weight || '',
+            packCount: 0
           };
           addToCart(bundleProduct);
           added += 1;
@@ -821,7 +953,7 @@ layout: default
       });
     }
 
-    renderQty();
+    renderPack();
   })();
 </script>
 

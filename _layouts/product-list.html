@@ -271,6 +271,24 @@ layout: default
     margin: 0.2rem 0 0;
   }
 
+  .card-pack-picker {
+    margin-top: 0.4rem;
+  }
+
+  .card-pack-picker select {
+    width: 100%;
+    border: 1px solid rgba(74, 48, 32, 0.2);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--earth);
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.38rem 0.52rem;
+    min-height: 36px;
+  }
+
   .card-footer {
     display: flex;
     align-items: center;
@@ -365,6 +383,16 @@ layout: default
       display: none;
     }
 
+    .card-pack-picker {
+      margin-top: 0.2rem;
+    }
+
+    .card-pack-picker select {
+      font-size: 0.58rem;
+      min-height: 32px;
+      padding: 0.3rem 0.42rem;
+    }
+
     .batch-note {
       justify-content: flex-start;
       align-items: flex-start;
@@ -412,6 +440,8 @@ layout: default
   <div class="products-grid">
     {% for product in catalog_products %}
     {% assign diet_value = product.dietary | downcase %}
+    {% assign pack_select_id = 'pack-' | append: product.id | append: '-' | append: forloop.index %}
+    {% assign pack_price_id = 'pack-price-' | append: product.id | append: '-' | append: forloop.index %}
     <a href="{{ '/products/' | append: product.folder | append: '/' | relative_url }}" class="product-card">
       <div class="card-image">
         <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" loading="lazy">
@@ -427,7 +457,7 @@ layout: default
       </div>
       <div class="card-content">
         <div class="card-badges">
-          <span class="badge badge-price">&euro;&nbsp;{{ product.price }}</span>
+          <span class="badge badge-price" id="{{ pack_price_id }}">&euro;&nbsp;{{ product.price }}</span>
           {% if product.available %}
           <span class="badge badge-stock">In stock</span>
           {% else %}
@@ -437,6 +467,16 @@ layout: default
         <h2 class="card-title">{{ product.title }}</h2>
         <p class="card-description">{{ product.description }}</p>
         <p class="card-pack">{{ product.quantityPerPacket }}</p>
+        {% if product.packs and product.packs.size > 0 %}
+        <div class="card-pack-picker">
+          <select id="{{ pack_select_id }}" data-price-target-id="{{ pack_price_id }}" onclick="event.preventDefault();event.stopPropagation();" onmousedown="event.stopPropagation();" onchange="event.stopPropagation();window.updatePackPriceMeta(this);">
+            {% for pack in product.packs %}
+            {% assign pack_count = pack.count | default: 1 %}
+            <option value="{{ pack.key | default: forloop.index }}" data-price="{{ pack.price }}" data-label="X{{ pack_count }}" data-weight="{{ pack.weight | default: product.weight | escape }}" data-count="{{ pack_count }}">X{{ pack_count }} · &euro; {{ pack.price }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
         <div class="card-footer">
           <span class="card-heat">{% for i in (1..product.heatLevel) %}&#x1F336;{% endfor %}</span>
           {% if product.available %}
@@ -446,6 +486,7 @@ layout: default
             data-price="{{ product.price }}"
             data-image="{{ product.image | relative_url }}"
             data-folder="{{ product.folder }}"
+            {% if product.packs and product.packs.size > 0 %}data-pack-select-id="{{ pack_select_id }}"{% endif %}
             data-weight="{{ product.weight }}">+ Add to cart</button>
           {% else %}
           <span class="card-cta" style="color:var(--mist)">Out of stock</span>
@@ -462,6 +503,26 @@ layout: default
   </div>
 
 </div>
+
+<script>
+  window.updatePackPriceMeta = function (selectEl) {
+    if (!selectEl) return;
+    var priceTargetId = selectEl.dataset.priceTargetId;
+    if (!priceTargetId) return;
+    var priceEl = document.getElementById(priceTargetId);
+    if (!priceEl) return;
+    var option = selectEl.selectedOptions && selectEl.selectedOptions.length ? selectEl.selectedOptions[0] : null;
+    var price = option ? parseFloat(option.dataset.price || '0') : 0;
+    if (isNaN(price)) return;
+    priceEl.innerHTML = '&euro;&nbsp;' + price.toFixed(2);
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.card-pack-picker select').forEach(function (selectEl) {
+      window.updatePackPriceMeta(selectEl);
+    });
+  });
+</script>
 
 <script type="application/ld+json">
 {

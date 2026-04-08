@@ -9,6 +9,19 @@ products:
     description: "Spice up your day with good blend of fiery spices and aromatic ingredients to fill up your belly."
     image: "/assets/images/current-hot-spicy-noodles.png"
     price: 1.00
+    packs:
+      - key: "single"
+        count: 1
+        price: 1.00
+        weight: "90g"
+      - key: "small-pack"
+        count: 5
+        price: 4.75
+        weight: "450g"
+      - key: "box"
+        count: 20
+        price: 18.00
+        weight: "1800g"
     currency: "Euro"
     quantityPerPacket: "90g total"
     dietary: ""
@@ -35,6 +48,19 @@ products:
     description: "Elevate your taste buds with 2X Spicy Hot Noodles, delivering extra heat and irresistible flavor."
     image: "/assets/images/current-2x-spicy-noodles.png"
     price: 1.50
+    packs:
+      - key: "single"
+        count: 1
+        price: 1.50
+        weight: "90g"
+      - key: "small-pack"
+        count: 5
+        price: 7.10
+        weight: "450g"
+      - key: "box"
+        count: 20
+        price: 27.00
+        weight: "1800g"
     currency: "Euro"
     quantityPerPacket: "90g total"
     dietary: ""
@@ -59,6 +85,19 @@ products:
     description: "Delight in the yummy, easy-to-eat Schezwan flavored hot and spicy noodles experience."
     image: "/assets/images/current-schezwan-instant-noodles.png"
     price: 1.00
+    packs:
+      - key: "single"
+        count: 1
+        price: 1.00
+        weight: "90g"
+      - key: "small-pack"
+        count: 5
+        price: 4.75
+        weight: "450g"
+      - key: "box"
+        count: 20
+        price: 18.00
+        weight: "1800g"
     currency: "Euro"
     quantityPerPacket: "90g total"
     dietary: ""
@@ -83,6 +122,19 @@ products:
     description: "Combination of Hot and Lemon that tingles your taste buds, and aromatic ingredients to fill up your belly."
     image: "/assets/images/current-hot-n-lemon-veggie-soup-noodles.png"
     price: 1.00
+    packs:
+      - key: "single"
+        count: 1
+        price: 1.00
+        weight: "100g"
+      - key: "small-pack"
+        count: 5
+        price: 4.75
+        weight: "500g"
+      - key: "box"
+        count: 20
+        price: 18.00
+        weight: "2000g"
     currency: "Euro"
     quantityPerPacket: "100g total"
     dietary: "vegetarian"
