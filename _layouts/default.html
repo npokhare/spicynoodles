@@ -400,10 +400,61 @@
       margin: 0;
     }
 
+    .footer-mobile-toggle {
+      display: none;
+    }
+
+    .footer-collapsible-body {
+      display: block;
+    }
+
     @media (max-width: 768px) {
       .footer-inner {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+      }
+
+      .footer-col-order .footer-heading-desktop {
+        display: none;
+      }
+
+      .footer-mobile-toggle {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        border: 1px solid rgba(138,112,96,0.26);
+        background: transparent;
+        color: var(--saffron-gold);
+        border-radius: 8px;
+        padding: 0.52rem 0.68rem;
+        font-family: 'DM Mono', ui-monospace, monospace;
+        font-size: 0.64rem;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .footer-mobile-arrow {
+        font-size: 0.8rem;
+        color: var(--mist);
+        transition: transform 0.2s;
+      }
+
+      .footer-col-order .footer-collapsible-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.24s ease;
+      }
+
+      .footer-col-order.is-open .footer-collapsible-body {
+        max-height: 320px;
+        margin-top: 0.55rem;
+      }
+
+      .footer-col-order.is-open .footer-mobile-arrow {
+        transform: rotate(180deg);
       }
     }
 
@@ -460,14 +511,20 @@
         <img src="/assets/images/logo.png" alt="SpicyNoodles" style="height:3rem;opacity:0.85;">
         <p>Authentic Nepal-inspired noodles, delivered to your door in the&nbsp;Netherlands.</p>
       </div>
-      <div class="footer-col">
-        <h4>Order</h4>
-        <a href="https://wa.me/31621153774" target="_blank" rel="noopener">WhatsApp us</a>
-        <a href="mailto:niru.nirajanpokharel@gmail.com">Email us</a>
-        <a href="/products/">Browse all products</a>
-        <a href="/noodles/">Browse noodles</a>
-        <a href="/achar/">Browse achar</a>
-        <a href="/articles/">Read articles</a>
+      <div class="footer-col footer-col-order" id="footer-order-col">
+        <button id="footer-order-toggle" class="footer-mobile-toggle" type="button" aria-expanded="false" aria-controls="footer-order-links">
+          <span>Order</span>
+          <span class="footer-mobile-arrow" aria-hidden="true">&#9662;</span>
+        </button>
+        <h4 class="footer-heading-desktop">Order</h4>
+        <div id="footer-order-links" class="footer-collapsible-body">
+          <a href="https://wa.me/31621153774" target="_blank" rel="noopener">WhatsApp us</a>
+          <a href="mailto:niru.nirajanpokharel@gmail.com">Email us</a>
+          <a href="/products/">Browse all products</a>
+          <a href="/noodles/">Browse noodles</a>
+          <a href="/achar/">Browse achar</a>
+          <a href="/articles/">Read articles</a>
+        </div>
       </div>
       <div class="footer-col">
         <h4>About</h4>
@@ -479,6 +536,18 @@
       <p>&copy; 2026 SpicyNoodles &mdash; All rights reserved</p>
     </div>
   </footer>
+  <script>
+    (function () {
+      var orderCol = document.getElementById('footer-order-col');
+      var orderToggle = document.getElementById('footer-order-toggle');
+      if (!orderCol || !orderToggle) return;
+
+      orderToggle.addEventListener('click', function () {
+        var isOpen = orderCol.classList.toggle('is-open');
+        orderToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    })();
+  </script>
   <script src="/assets/js/cart.js" defer></script>
   <script src="/assets/js/cookie-consent.js" defer></script>
 </body>

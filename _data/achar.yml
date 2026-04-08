@@ -5,7 +5,7 @@ products:
     promo: true
     promoLabel: "Best Seller"
     brandName: "Aama Ko Achar"
-    brandLogo: ""
+    brandLogo: "https://drive.brodox.com/uploads/898/logo.png"
     description: "Fiery cherry pepper achar with crisp bamboo shoots and bold Nepali spice depth. A strong, tangy jar that pairs with noodles, rice, or momo."
     image: "/assets/images/aama-hot-cherry-pepper-and-bamboo.webp"
     price: 4.90
@@ -29,7 +29,7 @@ products:
     title: "Timur Ko Chhop Achar"
     folder: "timur-ko-chhop-achar"
     brandName: "NMU"
-    brandLogo: ""
+    brandLogo: "/assets/images/achar-timur-ko-chhop.png"
     description: "Nepali timur achar paste with citrusy pepper aroma and savory heat. Great for dipping, mixing into noodles, or lifting simple meals."
     image: "/assets/images/achar-timur-ko-chhop.png"
     price: 4.20

@@ -1,0 +1,7 @@
+promo_home:
+  max_items: 4
+  item_ids:
+    - 5
+    - 1
+    - 2
+    - 6
