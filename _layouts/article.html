@@ -3,9 +3,12 @@ layout: default
 ---
 
 {% assign article = site.data.articles.articles | where: 'slug', page.article_slug | first %}
-{% assign cta_product = site.data.products.products | where: 'promo', true | first %}
+{% assign noodle_products = site.data.noodles.products %}
+{% assign achar_products = site.data.achar.products %}
+{% assign all_products = noodle_products | concat: achar_products %}
+{% assign cta_product = all_products | where: 'promo', true | first %}
 {% if cta_product == nil %}
-  {% assign cta_product = site.data.products.products | first %}
+  {% assign cta_product = all_products | first %}
 {% endif %}
 {% assign article_label_lc = article.hero_label | downcase %}
 {% assign article_cover_theme = 'theme-ink' %}

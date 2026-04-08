@@ -2,13 +2,21 @@
 layout: default
 ---
 
-{% assign product = site.data.products.products | where: 'folder', page.product_folder | first %}
+{% assign noodle_products = site.data.noodles.products %}
+{% assign achar_products = site.data.achar.products %}
+{% assign all_products = noodle_products | concat: achar_products %}
+{% assign product = all_products | where: 'folder', page.product_folder | first %}
 {% assign diet_value = product.dietary | downcase %}
 {% assign diet_label = '' %}
 {% if diet_value == 'vegan' %}
   {% assign diet_label = 'Vegan' %}
 {% elsif diet_value == 'vegetarian' %}
   {% assign diet_label = 'Vegetarian' %}
+{% endif %}
+{% assign together_available = all_products | where: 'available', true %}
+{% assign together_products = together_available | where_exp: 'item', 'item.folder != product.folder' %}
+{% if together_products.size == 0 %}
+  {% assign together_products = all_products | where_exp: 'item', 'item.folder != product.folder' %}
 {% endif %}
 
 <link rel="preload" as="image" href="{{ product.image | relative_url }}" fetchpriority="high">
@@ -45,6 +53,8 @@ layout: default
   }
 
   .pdx-media img {
+    position: relative;
+    z-index: 1;
     width: auto;
     height: auto;
     max-width: 100%;
@@ -57,6 +67,7 @@ layout: default
     position: absolute;
     top: 0.7rem;
     left: 0.7rem;
+    z-index: 5;
     background: linear-gradient(90deg, var(--deep-chili), var(--chili-red));
     color: #fff;
     border-radius: 999px;
@@ -382,6 +393,104 @@ layout: default
     font-weight: 500;
   }
 
+  .pdx-together {
+    margin-top: 1.15rem;
+    background: linear-gradient(180deg, #fff 0%, #fff8f2 100%);
+    border: 1px solid rgba(74, 48, 32, 0.12);
+    border-radius: 14px;
+    padding: 1.15rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .pdx-together-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .pdx-together-head h3 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 1.2rem;
+  }
+
+  .pdx-together-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .pdx-together-item {
+    border: 1px solid rgba(74, 48, 32, 0.12);
+    border-radius: 10px;
+    padding: 0.62rem;
+    background: #fff;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .pdx-together-item img {
+    width: 100%;
+    height: 90px;
+    object-fit: contain;
+  }
+
+  .pdx-together-item-title {
+    font-size: 0.83rem;
+    color: var(--ink);
+    line-height: 1.35;
+    font-weight: 600;
+    min-height: 2.1em;
+  }
+
+  .pdx-together-item-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.45rem;
+  }
+
+  .pdx-together-item-price {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--earth);
+  }
+
+  .pdx-mini-btn {
+    border: 0;
+    border-radius: 999px;
+    background: var(--chili-red);
+    color: #fff;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.52rem;
+    cursor: pointer;
+  }
+
+  .pdx-mini-btn:disabled {
+    background: var(--mist);
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 980px) {
+    .pdx-together-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pdx-together-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   @media (max-width: 980px) {
     .pdx-grid {
       grid-template-columns: 1fr;
@@ -531,6 +640,38 @@ layout: default
         {% endfor %}
       </div>
     </section>
+
+    {% if together_products.size > 0 %}
+    <section class="pdx-together" aria-label="People also buy together">
+      <div class="pdx-together-head">
+        <h3>People also buy together</h3>
+        <button type="button" class="pdx-mini-btn" id="pdx-add-bundle-all">Add all suggested</button>
+      </div>
+      <div class="pdx-together-grid">
+        {% for item in together_products limit:3 %}
+        <article class="pdx-together-item">
+          <a href="{{ '/products/' | append: item.folder | append: '/' | relative_url }}" aria-label="View {{ item.title }}">
+            <img src="{{ item.image | relative_url }}" alt="{{ item.title }}" loading="lazy">
+          </a>
+          <div class="pdx-together-item-title">{{ item.title }}</div>
+          <div class="pdx-together-item-foot">
+            <span class="pdx-together-item-price">&euro; {{ item.price }}</span>
+            <button type="button" class="pdx-mini-btn" data-add-bundle
+              data-id="{{ item.id }}"
+              data-title="{{ item.title }}"
+              data-price="{{ item.price }}"
+              data-image="{{ item.image | relative_url }}"
+              data-folder="{{ item.folder }}"
+              data-weight="{{ item.weight }}"
+              {% unless item.available %}disabled{% endunless %}>
+              {% if item.available %}Add{% else %}Sold Out{% endif %}
+            </button>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
   </article>
 </div>
 
@@ -546,6 +687,8 @@ layout: default
     var plusBtn = document.getElementById('pdx-qty-plus');
     var qtyInput = document.getElementById('pdx-qty-value');
     var addBtn = document.getElementById('pdx-add-btn');
+    var bundleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-add-bundle]'));
+    var bundleAllBtn = document.getElementById('pdx-add-bundle-all');
 
     if (!minusBtn || !plusBtn || !qtyInput || !addBtn) return;
 
@@ -622,6 +765,61 @@ layout: default
         }, 1200);
       }
     });
+
+    bundleButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (btn.disabled || typeof addToCart !== 'function') return;
+
+        var bundleProduct = {
+          id: parseInt(btn.dataset.id, 10),
+          title: btn.dataset.title,
+          price: parseFloat(btn.dataset.price),
+          image: btn.dataset.image,
+          folder: btn.dataset.folder,
+          weight: btn.dataset.weight || ''
+        };
+
+        addToCart(bundleProduct);
+        var original = btn.innerHTML;
+        btn.innerHTML = 'Added';
+        btn.disabled = true;
+        setTimeout(function () {
+          btn.innerHTML = original;
+          btn.disabled = false;
+        }, 1000);
+      });
+    });
+
+    if (bundleAllBtn) {
+      bundleAllBtn.addEventListener('click', function () {
+        if (typeof addToCart !== 'function') return;
+
+        var added = 0;
+        bundleButtons.forEach(function (btn) {
+          if (btn.disabled) return;
+          var bundleProduct = {
+            id: parseInt(btn.dataset.id, 10),
+            title: btn.dataset.title,
+            price: parseFloat(btn.dataset.price),
+            image: btn.dataset.image,
+            folder: btn.dataset.folder,
+            weight: btn.dataset.weight || ''
+          };
+          addToCart(bundleProduct);
+          added += 1;
+        });
+
+        if (added > 0) {
+          var originalAll = bundleAllBtn.innerHTML;
+          bundleAllBtn.innerHTML = 'Added ' + added;
+          bundleAllBtn.disabled = true;
+          setTimeout(function () {
+            bundleAllBtn.innerHTML = originalAll;
+            bundleAllBtn.disabled = false;
+          }, 1200);
+        }
+      });
+    }
 
     renderQty();
   })();

@@ -2,6 +2,16 @@
 layout: default
 ---
 
+{% assign noodle_products = site.data.noodles.products %}
+{% assign achar_products = site.data.achar.products %}
+{% assign all_products = noodle_products | concat: achar_products %}
+{% assign catalog_products = all_products %}
+{% if page.catalog_type == 'noodles' %}
+  {% assign catalog_products = noodle_products %}
+{% elsif page.catalog_type == 'achar' %}
+  {% assign catalog_products = achar_products %}
+{% endif %}
+
 <style>
   /* ── Page shell ───────────────────────────────── */
   .catalog-shell {
@@ -333,13 +343,13 @@ layout: default
 <div class="catalog-shell">
 
   <header class="catalog-header">
-    <span class="catalog-eyebrow">Nepal-inspired &middot; Small batch &middot; Netherlands</span>
-    <h1 class="catalog-title">Our Noodle Collection</h1>
-    <p class="catalog-desc">Each product is inspired by the bold spice profiles of Nepal. Browse the current batch below &mdash; availability is confirmed before any payment.</p>
+    <span class="catalog-eyebrow">{{ page.catalog_eyebrow | default: 'Nepal-inspired · Small batch · Netherlands' }}</span>
+    <h1 class="catalog-title">{{ page.catalog_title | default: page.title | default: 'Our Collection' }}</h1>
+    <p class="catalog-desc">{{ page.catalog_desc | default: 'Browse the current batch below — availability is confirmed before any payment.' }}</p>
   </header>
 
   <div class="products-grid">
-    {% for product in site.data.products.products %}
+    {% for product in catalog_products %}
     {% assign diet_value = product.dietary | downcase %}
     <a href="{{ '/products/' | append: product.folder | append: '/' | relative_url }}" class="product-card">
       <div class="card-image">
@@ -387,7 +397,7 @@ layout: default
 
   <div class="batch-note">
     <span class="batch-note-icon">&#x1F4E6;</span>
-    <p><strong>Ordering is simple.</strong> Find your noodles, add to your cart, then reach us on WhatsApp or email we confirm availability before any payment.</p>
+    <p><strong>Ordering is simple.</strong> {{ page.catalog_note | default: 'Add items to your cart, then reach us on WhatsApp or email. We confirm availability before any payment.' }}</p>
   </div>
 
 </div>
@@ -401,7 +411,7 @@ layout: default
   "mainEntity": {
     "@type": "ItemList",
     "itemListElement": [
-      {% for product in site.data.products.products %}
+      {% for product in catalog_products %}
       {
         "@type": "ListItem",
         "position": {{ forloop.index }},

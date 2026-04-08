@@ -2,9 +2,12 @@
 layout: default
 title: SpicyNoodles
 ---
-{% assign promo_product = site.data.products.products | where: 'promo', true | first %}
+{% assign noodle_products = site.data.noodles.products %}
+{% assign achar_products = site.data.achar.products %}
+{% assign all_products = noodle_products | concat: achar_products %}
+{% assign promo_product = all_products | where: 'promo', true | first %}
 {% if promo_product == nil %}
-  {% assign promo_product = site.data.products.products | first %}
+  {% assign promo_product = all_products | first %}
 {% endif %}
 
 <style>
@@ -714,7 +717,7 @@ title: SpicyNoodles
         <p id="promoband-desc" class="promoband-desc">{{ promo_product.description }}</p>
         <a id="promoband-order-btn" class="promoband-btn" href="{{ '/products/' | append: promo_product.folder | append: '/' | relative_url }}">Order Now &rarr;</a>
         <div class="promoband-thumbs">
-          {%- for product in site.data.products.products %}
+          {%- for product in all_products %}
           <button type="button" class="promoband-thumb{%- if product.id == promo_product.id %} promoband-thumb--active{%- endif %}" title="{{ product.title }}" data-promoband-id="{{ product.id }}" aria-label="Show {{ product.title }} in featured panel">
             <img src="{{ product.image | relative_url }}" alt="{{ product.title }}">
           </button>
@@ -778,7 +781,7 @@ title: SpicyNoodles
 <script>
   (function () {
     var featuredProducts = [
-      {%- for product in site.data.products.products -%}
+      {%- for product in all_products -%}
       {
         id: {{ product.id | jsonify }},
         title: {{ product.title | jsonify }},
