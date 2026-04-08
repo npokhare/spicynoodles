@@ -8,12 +8,12 @@ products:
     brandLogo: "https://drive.brodox.com/uploads/898/logo.png"
     description: "Fiery cherry pepper achar with crisp bamboo shoots and bold Nepali spice depth. A strong, tangy jar that pairs with noodles, rice, or momo."
     image: "/assets/images/aama-hot-cherry-pepper-and-bamboo.webp"
-    price: 4.90
+    price: 6.45
     currency: "Euro"
     quantityPerPacket: "350g jar"
     dietary: "Vegetarian"
     heatLevel: 4
-    available: false
+    available: true
     category: "Achar"
     weight: "350g"
     sku: "AHCB-001"
@@ -32,12 +32,12 @@ products:
     brandLogo: "/assets/images/achar-timur-ko-chhop.png"
     description: "Nepali timur achar paste with citrusy pepper aroma and savory heat. Great for dipping, mixing into noodles, or lifting simple meals."
     image: "/assets/images/achar-timur-ko-chhop.png"
-    price: 4.20
+    price: 7.50
     currency: "Euro"
     quantityPerPacket: "200g jar"
     dietary: "Vegetarian"
     heatLevel: 3
-    available: false
+    available: true
     category: "Achar"
     weight: "200g"
     sku: "ATKC-001"
