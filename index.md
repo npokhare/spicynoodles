@@ -253,45 +253,107 @@ title: SpicyNoodles
   }
 
   .trust-card {
-    border: 1px solid transparent;
+    border: 1px solid rgba(74, 48, 32, 0.14);
     border-radius: 14px;
-    padding: 1.8rem 1.6rem;
+    padding: 1.25rem 1.15rem 1.1rem;
+    background: #fff;
+    display: grid;
+    gap: 0.62rem;
   }
 
   .trust-card--spice {
-    background: var(--chili-blush);
-    border-color: rgba(208, 41, 10, 0.12);
+    background: linear-gradient(180deg, #fff5f2 0%, #fff9f7 100%);
+    border-color: rgba(208, 41, 10, 0.2);
   }
 
   .trust-card--gold {
-    background: var(--gold-soft);
-    border-color: rgba(201, 138, 45, 0.18);
+    background: linear-gradient(180deg, #fff9ef 0%, #fffdf8 100%);
+    border-color: rgba(201, 138, 45, 0.24);
   }
 
   .trust-card--green {
-    background: var(--green-soft);
-    border-color: rgba(58, 107, 53, 0.16);
+    background: linear-gradient(180deg, #f0f7f1 0%, #f9fdf9 100%);
+    border-color: rgba(58, 107, 53, 0.24);
   }
 
-  .trust-icon {
-    font-size: 1.75rem;
-    line-height: 1;
-    margin-bottom: 0.9rem;
+  .trust-stephead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .trust-stepnum {
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: #fff;
+    background: var(--chili-red);
+    box-shadow: 0 4px 14px rgba(208, 41, 10, 0.25);
+  }
+
+  .trust-steptag {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 0.22rem 0.52rem;
+    color: var(--earth);
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(74, 48, 32, 0.14);
+  }
+
+  .trust-proof {
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--mist);
+    border-top: 1px dashed rgba(74, 48, 32, 0.24);
+    padding-top: 0.62rem;
   }
 
   .trust-card h3 {
-    margin: 0 0 0.55rem;
-    font-size: 1.05rem;
+    margin: 0;
+    font-size: 1.02rem;
     color: var(--ink);
     font-weight: 700;
   }
 
   .trust-card p {
     margin: 0;
-    font-size: 0.92rem;
+    font-size: 0.87rem;
     color: var(--earth);
     opacity: 0.78;
-    line-height: 1.65;
+    line-height: 1.5;
+  }
+
+  .trust-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.38rem;
+  }
+
+  .trust-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--earth);
+    border: 1px solid rgba(74, 48, 32, 0.2);
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 999px;
+    padding: 0.2rem 0.45rem;
   }
 
   /* ── Featured banner ─────────────────────────────── */
@@ -311,9 +373,10 @@ title: SpicyNoodles
   .promoband-left {
     position: relative;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     overflow: hidden;
+    isolation: isolate;
   }
 
   .promoband-left::before {
@@ -333,13 +396,16 @@ title: SpicyNoodles
   .promoband-product-img {
     position: relative;
     z-index: 1;
-    width: 90%;
-    max-width: 400px;
-    height: 440px;
+    width: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 440px;
     object-fit: contain;
-    filter: drop-shadow(0 28px 48px rgba(0,0,0,0.6));
-    transform: scale(1.1);
-    transform-origin: bottom center;
+    object-position: center center;
+    mix-blend-mode: multiply;
+    filter: drop-shadow(0 28px 48px rgba(0,0,0,0.6)) saturate(1.05) contrast(1.04);
+    transform: scale(1.03);
+    transform-origin: center center;
   }
 
   .promoband-right {
@@ -419,7 +485,10 @@ title: SpicyNoodles
   }
 
   .promoband-thumb {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
     width: 58px;
     height: 58px;
     border-radius: 8px;
@@ -428,13 +497,20 @@ title: SpicyNoodles
     overflow: hidden;
     flex-shrink: 0;
     transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+    padding: 0;
+    cursor: pointer;
+    isolation: isolate;
   }
 
   .promoband-thumb img {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     padding: 4px;
+    mix-blend-mode: multiply;
   }
 
   .promoband-thumb--active {
@@ -559,8 +635,8 @@ title: SpicyNoodles
     }
 
     .promoband-product-img {
-      height: 260px;
-      transform: scale(1.05);
+      max-height: 260px;
+      transform: scale(1.02);
     }
 
     .promoband-right {
@@ -627,26 +703,26 @@ title: SpicyNoodles
     <section class="promoband" aria-label="Featured product">
     <div class="promoband-inner">
       <div class="promoband-left">
-        <img class="promoband-product-img" src="{{ promo_product.image | relative_url }}" alt="{{ promo_product.title }}">
+        <img id="promoband-main-image" class="promoband-product-img" src="{{ promo_product.image | relative_url }}" alt="{{ promo_product.title }}">
       </div>
       <div class="promoband-right">
         {%- if promo_product.brandLogo %}
-        <img class="promoband-brand-logo" src="{{ promo_product.brandLogo }}" alt="{{ promo_product.brandName }}" loading="lazy">
+        <img id="promoband-brand-logo" class="promoband-brand-logo" src="{{ promo_product.brandLogo }}" alt="{{ promo_product.brandName }}" loading="lazy">
         {%- endif %}
-        <p class="promoband-eyebrow">Featured Pick</p>
-        <h2 class="promoband-title">{{ promo_product.title }}</h2>
-        <p class="promoband-desc">{{ promo_product.description }}</p>
-        <a class="promoband-btn" href="{{ '/products/' | append: promo_product.folder | append: '/' | relative_url }}">Order Now &rarr;</a>
+        <p id="promoband-eyebrow" class="promoband-eyebrow">{{ promo_product.promoLabel | default: 'Featured Pick' }}</p>
+        <h2 id="promoband-title" class="promoband-title">{{ promo_product.title }}</h2>
+        <p id="promoband-desc" class="promoband-desc">{{ promo_product.description }}</p>
+        <a id="promoband-order-btn" class="promoband-btn" href="{{ '/products/' | append: promo_product.folder | append: '/' | relative_url }}">Order Now &rarr;</a>
         <div class="promoband-thumbs">
           {%- for product in site.data.products.products %}
-          <a href="{{ '/products/' | append: product.folder | append: '/' | relative_url }}" class="promoband-thumb{%- if product.id == promo_product.id %} promoband-thumb--active{%- endif %}" title="{{ product.title }}">
+          <button type="button" class="promoband-thumb{%- if product.id == promo_product.id %} promoband-thumb--active{%- endif %}" title="{{ product.title }}" data-promoband-id="{{ product.id }}" aria-label="Show {{ product.title }} in featured panel">
             <img src="{{ product.image | relative_url }}" alt="{{ product.title }}">
-          </a>
+          </button>
           {%- endfor %}
         </div>
       </div>
       <div class="promoband-price" aria-hidden="true">
-        <span class="promoband-price-star">&euro;&nbsp;{{ promo_product.price }}</span>
+        <span id="promoband-price" class="promoband-price-star">&euro;&nbsp;{{ promo_product.price }}</span>
       </div>
     </div>
   </section>
@@ -655,25 +731,128 @@ title: SpicyNoodles
     <div class="section-head">
       <div>
         <span class="section-eyebrow">Why choose us</span>
-        <h2 class="section-title">Built on origin, quality, and trust</h2>
+        <h2 class="section-title">How your noodle order works</h2>
       </div>
     </div>
     <div class="trust-strip">
       <article class="trust-card trust-card--spice">
-        <div class="trust-icon">&#x1F336;&#xFE0F;</div>
-        <h3>Himalayan Flavor First</h3>
-        <p>Every pack is rooted in Nepal-inspired spice profiles, never generic blends.</p>
+        <div class="trust-stephead">
+          <span class="trust-stepnum">01</span>
+          <span class="trust-steptag">Pick your heat</span>
+        </div>
+        <h3>Pick your vibe</h3>
+        <p>Choose mild, bold, or fire in seconds.</p>
+        <div class="trust-chips">
+          <span class="trust-chip">&#x1F336; Heat scale</span>
+          <span class="trust-chip">&#x23F1; Quick compare</span>
+        </div>
       </article>
       <article class="trust-card trust-card--gold">
-        <div class="trust-icon">&#x2728;</div>
-        <h3>Batch-Based Freshness</h3>
-        <p>We restock in focused batches so flavor and quality stay consistent.</p>
+        <div class="trust-stephead">
+          <span class="trust-stepnum">02</span>
+          <span class="trust-steptag">Confirm stock</span>
+        </div>
+        <h3>We confirm stock first</h3>
+        <p>No surprises. No random swaps.</p>
+        <div class="trust-chips">
+          <span class="trust-chip">&#x2705; Human check</span>
+          <span class="trust-chip">&#x1F4E6; Real availability</span>
+        </div>
       </article>
       <article class="trust-card trust-card--green">
-        <div class="trust-icon">&#x1F91D;</div>
-        <h3>Transparent Ordering</h3>
-        <p>We confirm availability before payment, so you always know what ships.</p>
+        <div class="trust-stephead">
+          <span class="trust-stepnum">03</span>
+          <span class="trust-steptag">Fast checkout</span>
+        </div>
+        <h3>Checkout your way</h3>
+        <p>WhatsApp or email, done in minutes.</p>
+        <div class="trust-chips">
+          <span class="trust-chip">&#x1F4AC; WhatsApp</span>
+          <span class="trust-chip">&#x2709; Email</span>
+        </div>
       </article>
     </div>
   </section>
 </div>
+
+<script>
+  (function () {
+    var featuredProducts = [
+      {%- for product in site.data.products.products -%}
+      {
+        id: {{ product.id | jsonify }},
+        title: {{ product.title | jsonify }},
+        description: {{ product.description | jsonify }},
+        image: {{ product.image | relative_url | jsonify }},
+        brandName: {{ product.brandName | default: '' | jsonify }},
+        brandLogo: {{ product.brandLogo | default: '' | jsonify }},
+        folder: {{ product.folder | jsonify }},
+        price: {{ product.price | jsonify }},
+        promoLabel: {{ product.promoLabel | default: '' | jsonify }},
+        promo: {% if product.promo %}true{% else %}false{% endif %}
+      }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ];
+
+    var productsById = {};
+    featuredProducts.forEach(function (product) {
+      productsById[String(product.id)] = product;
+    });
+
+    var mainImage = document.getElementById('promoband-main-image');
+    var brandLogo = document.getElementById('promoband-brand-logo');
+    var eyebrow = document.getElementById('promoband-eyebrow');
+    var title = document.getElementById('promoband-title');
+    var desc = document.getElementById('promoband-desc');
+    var price = document.getElementById('promoband-price');
+    var orderBtn = document.getElementById('promoband-order-btn');
+    var thumbs = Array.prototype.slice.call(document.querySelectorAll('[data-promoband-id]'));
+
+    if (!mainImage || !eyebrow || !title || !desc || !price || !orderBtn || !thumbs.length) return;
+
+    function updateThumbStates(activeId) {
+      thumbs.forEach(function (thumb) {
+        var isActive = thumb.getAttribute('data-promoband-id') === String(activeId);
+        thumb.classList.toggle('promoband-thumb--active', isActive);
+        thumb.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    function setFeaturedProduct(productId) {
+      var product = productsById[String(productId)];
+      if (!product) return;
+
+      mainImage.src = product.image;
+      mainImage.alt = product.title;
+      title.textContent = product.title;
+      desc.textContent = product.description;
+      price.innerHTML = '&euro;&nbsp;' + product.price;
+      if (product.promo) {
+        eyebrow.textContent = product.promoLabel || 'Featured Pick';
+      } else {
+        eyebrow.textContent = 'Collection Pick';
+      }
+      orderBtn.href = '/products/' + product.folder + '/';
+
+      if (brandLogo) {
+        if (product.brandLogo) {
+          brandLogo.src = product.brandLogo;
+          brandLogo.alt = product.brandName || 'Brand logo';
+          brandLogo.style.display = 'block';
+        } else {
+          brandLogo.style.display = 'none';
+        }
+      }
+
+      updateThumbStates(product.id);
+    }
+
+    thumbs.forEach(function (thumb) {
+      thumb.addEventListener('click', function () {
+        setFeaturedProduct(thumb.getAttribute('data-promoband-id'));
+      });
+    });
+
+    setFeaturedProduct({{ promo_product.id | jsonify }});
+  })();
+</script>

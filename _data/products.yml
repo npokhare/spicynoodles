@@ -3,6 +3,7 @@ products:
     title: "Current Hot & Spicy Noodles"
     folder: "current-hot-spicy-noodles"
     promo: true
+    promoLabel: "Most Loved"
     brandName: "Yashoda Foods"
     brandLogo: "https://yashodafoods.com.np/wp-content/uploads/2024/03/logo-yasodha-foods.png"
     description: "Spice up your day with good blend of fiery spices and aromatic ingredients to fill up your belly."
@@ -27,11 +28,13 @@ products:
   - id: 2
     title: "Current 2x Spicy Noodles"
     folder: "current-2x-spicy-noodles"
+    promo: true
+    promoLabel: "Limited Heat Drop"
     brandName: "Yashoda Foods"
     brandLogo: "https://yashodafoods.com.np/wp-content/uploads/2024/03/logo-yasodha-foods.png"
     description: "Elevate your taste buds with 2X Spicy Hot Noodles, delivering extra heat and irresistible flavor."
     image: "/assets/images/current-2x-spicy-noodles.png"
-    price: 1.00
+    price: 1.50
     currency: "Euro"
     quantityPerPacket: "90g total"
     dietary: ""
