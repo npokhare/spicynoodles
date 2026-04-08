@@ -1,0 +1,50 @@
+products:
+  - id: 5
+    title: "Hot Cherry Pepper & Bamboo Achar"
+    folder: "hot-cherry-pepper-bamboo-achar"
+    promo: true
+    promoLabel: "Best Seller"
+    brandName: "Aama Ko Achar"
+    brandLogo: ""
+    description: "Fiery cherry pepper achar with crisp bamboo shoots and bold Nepali spice depth. A strong, tangy jar that pairs with noodles, rice, or momo."
+    image: "/assets/images/aama-hot-cherry-pepper-and-bamboo.webp"
+    price: 4.90
+    currency: "Euro"
+    quantityPerPacket: "350g jar"
+    dietary: "Vegetarian"
+    heatLevel: 4
+    available: false
+    category: "Achar"
+    weight: "350g"
+    sku: "AHCB-001"
+    countryOfOrigin: "Nepal"
+    shelfLife: "18 months"
+    specifications:
+      "Texture": "Chunky with bamboo crunch"
+      "Main Ingredient": "Cherry Pepper, Bamboo Shoots"
+      "Contains": "Mustard Oil, Spices, Salt"
+      "Gluten-Free": "Yes"
+
+  - id: 6
+    title: "Timur Ko Chhop Achar"
+    folder: "timur-ko-chhop-achar"
+    brandName: "NMU"
+    brandLogo: ""
+    description: "Nepali timur achar paste with citrusy pepper aroma and savory heat. Great for dipping, mixing into noodles, or lifting simple meals."
+    image: "/assets/images/achar-timur-ko-chhop.png"
+    price: 4.20
+    currency: "Euro"
+    quantityPerPacket: "200g jar"
+    dietary: "Vegetarian"
+    heatLevel: 3
+    available: false
+    category: "Achar"
+    weight: "200g"
+    sku: "ATKC-001"
+    countryOfOrigin: "Nepal"
+    shelfLife: "18 months"
+    specifications:
+      "Texture": "Thick chutney-style paste"
+      "Main Ingredient": "Timur Pepper"
+      "Contains": "Spices, Mustard Oil, Salt"
+      "Gluten-Free": "Yes"
