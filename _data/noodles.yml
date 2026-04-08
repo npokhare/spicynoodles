@@ -13,7 +13,7 @@ products:
     quantityPerPacket: "90g total"
     dietary: ""
     heatLevel: 4
-    available: true
+    available: false
     category: "Instant Noodles"
     weight: "90g"
     sku: "CHSN-001"
