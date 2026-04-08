@@ -7,6 +7,15 @@ layout: default
 {% if cta_product == nil %}
   {% assign cta_product = site.data.products.products | first %}
 {% endif %}
+{% assign article_label_lc = article.hero_label | downcase %}
+{% assign article_cover_theme = 'theme-ink' %}
+{% if article_label_lc contains 'buy' or article_label_lc contains 'order' %}
+  {% assign article_cover_theme = 'theme-saffron' %}
+{% elsif article_label_lc contains 'idea' %}
+  {% assign article_cover_theme = 'theme-herb' %}
+{% elsif article_label_lc contains 'guide' %}
+  {% assign article_cover_theme = 'theme-ember' %}
+{% endif %}
 
 <style>
   .article-shell {
@@ -22,7 +31,88 @@ layout: default
     border-radius: 16px;
     padding: 2rem;
     display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1.1rem;
+    align-items: stretch;
+  }
+
+  .article-hero-main {
+    display: grid;
     gap: 0.9rem;
+  }
+
+  .article-hero-art {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 0.9rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border: 1px solid rgba(74, 48, 32, 0.12);
+  }
+
+  .article-hero-art::before,
+  .article-hero-art::after {
+    content: '';
+    position: absolute;
+    border-radius: 999px;
+  }
+
+  .article-hero-art::before {
+    width: 170px;
+    height: 170px;
+    top: -80px;
+    right: -45px;
+    background: rgba(255, 255, 255, 0.24);
+  }
+
+  .article-hero-art::after {
+    width: 110px;
+    height: 110px;
+    bottom: -52px;
+    left: -18px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .article-hero-art-chip {
+    position: relative;
+    z-index: 1;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.84);
+    color: #2f1d13;
+    border-radius: 999px;
+    padding: 0.16rem 0.48rem;
+  }
+
+  .article-hero-art-glyph {
+    position: relative;
+    z-index: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+  }
+
+  .article-hero-art.theme-ember {
+    background: linear-gradient(145deg, #d8421f 0%, #8c1a04 100%);
+  }
+
+  .article-hero-art.theme-saffron {
+    background: linear-gradient(145deg, #d79b3d 0%, #9c6516 100%);
+  }
+
+  .article-hero-art.theme-herb {
+    background: linear-gradient(145deg, #4d8146 0%, #2f5a2d 100%);
+  }
+
+  .article-hero-art.theme-ink {
+    background: linear-gradient(145deg, #4a3020 0%, #1c1007 100%);
   }
 
   .article-eyebrow {
@@ -193,25 +283,46 @@ layout: default
     background: var(--herb-green);
     color: #fff;
   }
+
+  @media (max-width: 760px) {
+    .article-hero {
+      grid-template-columns: 1fr;
+      padding: 1.4rem;
+    }
+
+    .article-hero-art {
+      min-height: 130px;
+    }
+
+    .article-hero-art-glyph {
+      font-size: 3rem;
+    }
+  }
 </style>
 
 {% if article %}
 <div class="article-shell">
   <header class="article-hero">
-    <span class="article-eyebrow">{{ article.hero_label }}</span>
-    <h1 class="article-title">{{ article.title }}</h1>
-    <div class="article-meta">
-      <span>{{ article.published_at }}</span>
-      <span>&bull;</span>
-      <span>{{ article.read_time }}</span>
-      <span>&bull;</span>
-      <span>Nepal-inspired</span>
+    <div class="article-hero-art {{ article_cover_theme }}">
+      <span class="article-hero-art-chip">{{ article.hero_label }}</span>
+      <span class="article-hero-art-glyph">{{ article.hero_label | slice: 0, 1 | upcase }}</span>
     </div>
-    <p class="article-intro">{{ article.intro }}</p>
-    <div class="article-keywords">
-      {% for keyword in article.keywords %}
-      <span class="article-keyword">{{ keyword }}</span>
-      {% endfor %}
+    <div class="article-hero-main">
+      <span class="article-eyebrow">{{ article.hero_label }}</span>
+      <h1 class="article-title">{{ article.title }}</h1>
+      <div class="article-meta">
+        <span>{{ article.published_at }}</span>
+        <span>&bull;</span>
+        <span>{{ article.read_time }}</span>
+        <span>&bull;</span>
+        <span>Nepal-inspired</span>
+      </div>
+      <p class="article-intro">{{ article.intro }}</p>
+      <div class="article-keywords">
+        {% for keyword in article.keywords %}
+        <span class="article-keyword">{{ keyword }}</span>
+        {% endfor %}
+      </div>
     </div>
   </header>
 

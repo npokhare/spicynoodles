@@ -53,25 +53,99 @@ breadcrumb: <a href="/">Home</a> / Articles
     background: #fff;
     border: 1px solid rgba(74, 48, 32, 0.1);
     border-radius: 14px;
-    padding: 1.2rem;
+    padding: 0;
+    overflow: hidden;
     text-decoration: none;
     color: inherit;
     display: grid;
-    gap: 0.7rem;
+    gap: 0;
     transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .article-card-cover {
+    position: relative;
+    min-height: 124px;
+    padding: 0.9rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(74, 48, 32, 0.08);
+  }
+
+  .article-card-cover::before,
+  .article-card-cover::after {
+    content: '';
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+
+  .article-card-cover::before {
+    width: 160px;
+    height: 160px;
+    top: -70px;
+    right: -36px;
+    background: rgba(255, 255, 255, 0.28);
+  }
+
+  .article-card-cover::after {
+    width: 130px;
+    height: 130px;
+    bottom: -62px;
+    left: -24px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .theme-ember {
+    background: linear-gradient(145deg, #d8421f 0%, #8c1a04 100%);
+  }
+
+  .theme-saffron {
+    background: linear-gradient(145deg, #d79b3d 0%, #9c6516 100%);
+  }
+
+  .theme-herb {
+    background: linear-gradient(145deg, #4d8146 0%, #2f5a2d 100%);
+  }
+
+  .theme-ink {
+    background: linear-gradient(145deg, #4a3020 0%, #1c1007 100%);
+  }
+
+  .article-card-cover-chip {
+    position: relative;
+    z-index: 1;
+    font-family: 'DM Mono', ui-monospace, monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.84);
+    color: #2f1d13;
+    border-radius: 999px;
+    padding: 0.18rem 0.52rem;
+  }
+
+  .article-card-cover-glyph {
+    position: relative;
+    z-index: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .article-card-body {
+    padding: 1.05rem 1.15rem 1.1rem;
+    display: grid;
+    gap: 0.68rem;
   }
 
   .article-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(28, 16, 7, 0.09);
-  }
-
-  .article-card-label {
-    font-family: 'DM Mono', ui-monospace, monospace;
-    font-size: 0.64rem;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    color: var(--saffron-gold);
   }
 
   .article-card h2 {
@@ -107,11 +181,25 @@ breadcrumb: <a href="/">Home</a> / Articles
   <section class="articles-grid" aria-label="Article list">
     {% assign sorted_articles = site.data.articles.articles | sort: 'published_at' | reverse %}
     {% for article in sorted_articles %}
+    {% assign label_lc = article.hero_label | downcase %}
+    {% assign cover_theme = 'theme-ink' %}
+    {% if label_lc contains 'buy' or label_lc contains 'order' %}
+      {% assign cover_theme = 'theme-saffron' %}
+    {% elsif label_lc contains 'idea' %}
+      {% assign cover_theme = 'theme-herb' %}
+    {% elsif label_lc contains 'guide' %}
+      {% assign cover_theme = 'theme-ember' %}
+    {% endif %}
     <a class="article-card" href="{{ '/articles/' | append: article.slug | append: '/' | relative_url }}">
-      <span class="article-card-label">{{ article.hero_label }}</span>
-      <h2>{{ article.title }}</h2>
-      <p>{{ article.intro }}</p>
-      <span class="article-card-meta">{{ article.read_time }} &middot; {{ article.published_at }}</span>
+      <div class="article-card-cover {{ cover_theme }}">
+        <span class="article-card-cover-chip">{{ article.hero_label }}</span>
+        <span class="article-card-cover-glyph">{{ article.hero_label | slice: 0, 1 | upcase }}</span>
+      </div>
+      <div class="article-card-body">
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.intro }}</p>
+        <span class="article-card-meta">{{ article.read_time }} &middot; {{ article.published_at }}</span>
+      </div>
     </a>
     {% endfor %}
   </section>
