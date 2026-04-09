@@ -250,6 +250,13 @@ function renderCartPage() {
           <span>Payment</span>
           <span style="background:#EBF4EA;color:#3A6B35;border:1px solid rgba(58,107,53,0.3);border-radius:999px;padding:0.16rem 0.52rem;">${DEFAULT_PAYMENT_METHOD}</span>
         </div>
+        <div class="cart-legal-box" style="border:1px solid rgba(74,48,32,0.12);border-radius:10px;padding:0.7rem 0.75rem;background:#FFFBF5;">
+          <label style="display:flex;gap:0.55rem;align-items:flex-start;font-size:0.78rem;line-height:1.45;color:#4A3020;">
+            <input id="cart-legal-ack" type="checkbox" style="margin-top:0.15rem;">
+            <span>I have read and agree to the <a href="/terms/" target="_blank" rel="noopener">Terms</a>, <a href="/privacy/" target="_blank" rel="noopener">Privacy Policy</a>, and <a href="/returns/" target="_blank" rel="noopener">Returns policy</a>.</span>
+          </label>
+          <p style="margin:0.5rem 0 0;font-size:0.72rem;color:#8A7060;line-height:1.4;">By ordering, you request a purchase confirmation by WhatsApp or email. Full trader details are available in the <a href="/legal/" target="_blank" rel="noopener">Legal Notice</a>.</p>
+        </div>
         <div class="cart-cta-stack">
           <a href="#" id="cart-wa-btn" target="_blank" rel="noopener" class="cart-btn-wa" onclick="return handleOrderClick(event,'wa')">
             &#x1F4AC; Order via WhatsApp
@@ -258,6 +265,7 @@ function renderCartPage() {
             &#x2709; Order via Email
           </a>
         </div>
+        <p id="cart-legal-error" style="display:none;margin:0.2rem 0 0;color:#8C1A04;font-size:0.74rem;line-height:1.4;">Please confirm the legal terms before placing your order.</p>
         <button onclick="clearCart()" class="cart-clear-btn">Clear cart</button>
       </aside>
     </div>`;
@@ -371,9 +379,22 @@ function validateAddress() {
   return valid;
 }
 
+function validateLegalAcknowledgement() {
+  const checkbox = document.getElementById('cart-legal-ack');
+  const errorEl = document.getElementById('cart-legal-error');
+  if (!checkbox) return true;
+
+  const accepted = !!checkbox.checked;
+  if (errorEl) {
+    errorEl.style.display = accepted ? 'none' : 'block';
+  }
+  return accepted;
+}
+
 function handleOrderClick(e, type) {
   e.preventDefault();
   if (!validateAddress()) return false;
+  if (!validateLegalAcknowledgement()) return false;
   const cart     = getCart();
   const subtotal = getCartTotal();
   const shipping = getShipping(subtotal);
